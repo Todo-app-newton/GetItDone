@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetItDone-Backend", "GetItD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetItDone-Frontend", "GetItDone-Frontend\GetItDone-Frontend.csproj", "{192DB071-D63A-43D7-A482-91DC697AB140}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetItDone-Models", "GetItDone-Models\GetItDone-Models.csproj", "{890E82E1-13A3-4433-9FBE-1D4DD4055A04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetItDone-Domain", "GetItDone-Models\GetItDone-Domain.csproj", "{890E82E1-13A3-4433-9FBE-1D4DD4055A04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetItDone-Database", "GetItDone-Database\GetItDone-Database.csproj", "{9F8CEE4C-D303-4C60-B374-4C62808EE653}"
 EndProject
