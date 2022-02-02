@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GetItDone_Models
+namespace GetItDone_Database
 {
     public class Class1
     {
