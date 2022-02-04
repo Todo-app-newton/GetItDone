@@ -19,6 +19,40 @@ namespace GetItDone_Database.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("GetItDone_Models.Models.Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Period")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("GetItDone_Models.Models.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -142,38 +176,23 @@ namespace GetItDone_Database.Migrations
                     b.ToTable("ProjectManagers");
                 });
 
-            modelBuilder.Entity("GetItDone_Models.Models.Task", b =>
+            modelBuilder.Entity("GetItDone_Models.Models.Assignment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasOne("GetItDone_Models.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasOne("GetItDone_Models.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Navigation("Employee");
 
-                    b.Property<DateTime>("Period")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Progress")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Tasks");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("GetItDone_Models.Models.Employee", b =>
@@ -204,25 +223,6 @@ namespace GetItDone_Database.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("ProjectManager");
-                });
-
-            modelBuilder.Entity("GetItDone_Models.Models.Task", b =>
-                {
-                    b.HasOne("GetItDone_Models.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GetItDone_Models.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Project");
                 });
 #pragma warning restore 612, 618
         }

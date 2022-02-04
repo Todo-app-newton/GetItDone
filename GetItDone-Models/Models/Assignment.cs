@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GetItDone_Models.Models
 {
-    public class Task
+    public class Assignment
     {
         public int Id { get; set; }
         public string Title { get; set; }
