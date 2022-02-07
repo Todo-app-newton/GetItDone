@@ -13,7 +13,7 @@ namespace GetItDone_Database.Database
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<Assignment> Tasks { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Project> Projects { get; set; }

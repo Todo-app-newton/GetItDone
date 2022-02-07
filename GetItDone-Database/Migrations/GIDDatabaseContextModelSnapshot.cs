@@ -50,7 +50,7 @@ namespace GetItDone_Database.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("GetItDone_Models.Models.Company", b =>
