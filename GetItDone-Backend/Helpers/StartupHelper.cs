@@ -1,5 +1,7 @@
 ﻿using GetItDone_Business.Services;
 using GetItDone_Database.Database;
+using GetItDone_Database.Repository;
+using GetItDone_Models.Interfaces.Repository;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,12 @@ namespace GetItDone_Backend.Helpers
 
         public static void ConfigureDependencyInjection(this IServiceCollection service)
         {
+
+            service.AddScoped<IAssignmentRepository, GIDDatabaseRepository>();
+            service.AddScoped<ICustomerRepository, GIDDatabaseRepository>();
+            service.AddScoped<IEmployeeRepository, GIDDatabaseRepository>();
+            service.AddScoped<IProjectManagerRepository, GIDDatabaseRepository>();
+
             service.AddScoped<IAuthenticationService, AuthenticationService>();
             service.AddScoped<AuthenticationService>();
         }
