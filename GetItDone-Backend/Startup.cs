@@ -1,4 +1,5 @@
 using GetItDone_Backend.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,7 +27,19 @@ namespace GetItDone_Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            StartupHelper.DatabaseConfiguration(services, Configuration);
+            //Database
+            services.DatabaseConfiguration(Configuration);
+            
+            //Authentication
+            services.ConfigureIdentityOptions();
+            services.ConfigureBearer(Configuration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+
+            //DependencyInjections 
+            services.ConfigureDependencyInjection();
+            services.ConfigureAppSettingsValuesInjection(Configuration);
+
+
             services.AddControllers();
         }
 
@@ -42,6 +55,7 @@ namespace GetItDone_Backend
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

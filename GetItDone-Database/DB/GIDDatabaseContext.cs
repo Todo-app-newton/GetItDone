@@ -1,4 +1,5 @@
 ﻿using GetItDone_Models.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace GetItDone_Database.Database
 {
-    public class GIDDatabaseContext : DbContext
+    public class GIDDatabaseContext : IdentityDbContext
     {
         public GIDDatabaseContext(DbContextOptions<GIDDatabaseContext> options) : base(options){}
 
