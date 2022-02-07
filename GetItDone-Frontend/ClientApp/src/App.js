@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
 import { Start } from './components/Start/Start';
 import { FetchData } from './components/FetchData';
@@ -10,13 +10,15 @@ import './custom.css'
 export default class App extends Component {
   static displayName = App.name;
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Start} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+    render() {
+        return (
+            <Switch>
+                <Route exact path='/' component={Start} />
+                <Layout>
+                    <Route path='/counter' component={Counter} />
+                    <Route path='/fetch-data' component={FetchData} />
+                </Layout>
+            </Switch>
+        );
+    }
 }
