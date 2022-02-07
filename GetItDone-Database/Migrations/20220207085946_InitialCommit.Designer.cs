@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GetItDone_Database.Migrations
 {
     [DbContext(typeof(GIDDatabaseContext))]
-    [Migration("20220204082558_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20220207085946_InitialCommit")]
+    partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace GetItDone_Database.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("GetItDone_Models.Models.Company", b =>
