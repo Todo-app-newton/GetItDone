@@ -10,7 +10,8 @@ namespace GetItDone_Models.Interfaces.Repository
     {
         Task<IEnumerable<Employee>> EmployeesAsync();
         Task<Employee> EmployeeAsync(int id);
-        Task DeleteEmployeeAsync(int id);
+        Task DeleteEmployeeAsync(Employee employee);
         Task UpdateEmployeeAsync(Employee employee);
+        Task CreateEmployeeAsync(Employee employee);
     }
 }
