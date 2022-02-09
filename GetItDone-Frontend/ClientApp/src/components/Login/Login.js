@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Col, Container, Form } from 'reactstrap';
 import { Link } from 'react-router-dom'
-import './Start.css'
+import './Login.css'
 
-export class Start extends Component {
+export class Login extends Component {
     static displayName = Start.name;
 
     constructor(props) {
@@ -11,11 +11,9 @@ export class Start extends Component {
         this.state = {
             email: '',
             password: '',
-            isLoggedIn: false
         };
     }
    
-
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
@@ -69,9 +67,9 @@ export class Start extends Component {
             try {
                 let res = await fetch('login', {
                     method: "POST",
-                    body: LoginUserModel({
-                        email: email,
-                        password: password,
+                    body: ({
+                        email,
+                        password
                     }),
                 });
                 let resJson = await res.json();
@@ -83,6 +81,7 @@ export class Start extends Component {
             } catch (err) {
                 console.log(err);
             }
+        }
     }
 
 }

@@ -21,8 +21,9 @@ namespace GetItDone_Frontend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LoginUser([FromForm] LoginUserModel user)
+        public ActionResult LoginUser()
         {
+            Console.Write("Lalalala");
             try
             {
                 return RedirectToAction(nameof(Index));

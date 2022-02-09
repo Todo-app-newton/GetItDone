@@ -13,7 +13,7 @@ export default class App extends Component {
     render() {
         return (
             <Switch>
-                <Route exact path='/' component={Start} />
+                <Route exact path='/' component={Login} />
                 <Layout>
                     <Route path='/counter' component={Counter} />
                     <Route path='/fetch-data' component={FetchData} />
