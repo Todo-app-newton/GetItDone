@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GetItDone-Database\GetItDone-Database.csproj" />
     <ProjectReference Include="..\GetItDone-Models\GetItDone-Domain.csproj" />
   </ItemGroup>
 
