@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace GetItDone_Frontend.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
     public class LoginController : ControllerBase
     {
@@ -20,18 +21,17 @@ namespace GetItDone_Frontend.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LoginUser()
+        public IEnumerable<LoginUserModel> Post(string values)
         {
-            Console.Write("Lalalala");
-            try
+            Console.Write("ladda "+values);
+            return Enumerable.Range(1, 5).Select(index => new LoginUserModel
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                throw new Exception();
-            }
+                UserEmail = "value",
+                Password = values
+
+            })
+            .ToArray();
+
         }
     }
 }

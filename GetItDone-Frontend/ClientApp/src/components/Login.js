@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
 import { Col, Container, Form } from 'reactstrap';
 import { Link } from 'react-router-dom'
-import './Login.css'
+import './Login/Login.css'
 
 export class Login extends Component {
-    static displayName = Start.name;
+    static displayName = Login.name;
 
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            clickButton: false,
+            isLoggedIn: false,
+            loginUser:{
+                email: '',
+                password: '',}
+
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
    
-    handleChange = (e) => {
+    handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    handleSubmit() {
+        console.log('handleSubmit')
+        this.sendLogin();
     }
 
     render() {
@@ -30,8 +41,8 @@ export class Login extends Component {
                             <input type="email"
                                 className="form-control"
                                 name="email"
-                                onChange={this.handleChange}
                                 value={this.state.email}
+                                onChange={this.handleChange}
                                 placeholder="Enter email" />
                         </div>
                         <div className="form-group">
@@ -39,8 +50,8 @@ export class Login extends Component {
                             <input type="password"
                                 className="form-control"
                                 name="password"
-                                onChange={this.handleChange}
                                 value={this.state.password}
+                                onChange={this.handleChange}
                                 placeholder="Enter password" />
                         </div>
                         <div className="form-group">
@@ -52,7 +63,7 @@ export class Login extends Component {
                         <button
                             type="submit"
                             className="btn btn-primary btn-block"
-                            onClick={() => this.incrementLogIn}
+                            onClick={this.handleSubmit}
                         >Submit</button>
                         <p className="forgot-password text-right">
                             Forgot <a href="#">password?</a>
@@ -61,28 +72,13 @@ export class Login extends Component {
                 </Col>
             </Container>
         );
-
-        let handleSubmit = async (e) => {
-            e.preventDefault();
-            try {
-                let res = await fetch('login', {
-                    method: "POST",
-                    body: ({
-                        email,
-                        password
-                    }),
-                });
-                let resJson = await res.json();
-                if (res.status === 200) {
-                    setMessage("User created successfully");
-                } else {
-                    setMessage("Some error occured");
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        }
     }
-
+    async sendLogin() {
+        const response = await fetch('login', { method: 'POST', body: this.state.email });
+        const data = await response.json();
+        this.setState({ forecasts: data});
+        console.log(data);
+        //if (data === true) { this.setState({ isLoggedIn: data }); }
+    }
 }
 

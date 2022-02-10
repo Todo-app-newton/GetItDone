@@ -8,10 +8,10 @@ namespace GetItDone_Frontend.Models
 {
     public class LoginUserModel
     {
-        [DataType(DataType.EmailAddress)]
+        //[DataType(DataType.EmailAddress)]
         public string UserEmail { get; set; }
 
-        [DataType(DataType.Password)]
+        //[DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }
