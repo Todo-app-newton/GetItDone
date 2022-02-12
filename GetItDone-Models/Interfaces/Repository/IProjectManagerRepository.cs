@@ -10,7 +10,8 @@ namespace GetItDone_Models.Interfaces.Repository
     {
         Task<IEnumerable<ProjectManager>> ProjectManagersAsync();
         Task<ProjectManager> ProjectManagerAsync(int id);
-        Task DeleteProjectManagerAsync(int id);
+        Task CreateProjectManager(ProjectManager projectManager);
+        Task DeleteProjectManagerAsync(ProjectManager projectManager);
         Task UpdateProjectManagerAsync(ProjectManager projectManager);
     }
 }

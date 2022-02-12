@@ -49,10 +49,10 @@ namespace GetItDone_Backend
                             Email = "Skanska@info.com"
                         };
 
-                        userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();
+                        userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();                      
                         userManager.CreateAsync(employee, AppSettings.EmployeePassword).GetAwaiter().GetResult();
                         userManager.CreateAsync(company, AppSettings.CompanyPassword).GetAwaiter().GetResult();
-
+                        
                         var projectManagerClaim = new Claim("Role", "Project Manager");
                         var employeeClaim = new Claim("Role", "Employee");
                         var companyClaim = new Claim("Role", "Company");
@@ -60,6 +60,9 @@ namespace GetItDone_Backend
                         userManager.AddClaimAsync(projectManager, projectManagerClaim).GetAwaiter().GetResult();
                         userManager.AddClaimAsync(employee, employeeClaim).GetAwaiter().GetResult();
                         userManager.AddClaimAsync(company, companyClaim).GetAwaiter().GetResult();
+                    
+                        
+                    
                     }
                 }
             }

@@ -10,8 +10,9 @@ namespace GetItDone_Models.Interfaces.Repository
     {
         Task<IEnumerable<Customer>> CustomersAsync();
         Task<Customer> CustomerAsync(int id);
-        Task DeleteCustomerAsync(int id);
+        Task DeleteCustomerAsync(Customer customer);
         Task UpdateCustomerAsync(Customer customer);
+        Task CreateCustomerAsync(Customer customer);
         
     }
 }

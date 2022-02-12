@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace GetItDone_Database.Repository
 {
-    public class GIDDatabaseRepository : ICustomerRepository, IProjectManagerRepository, IEmployeeRepository, IAssignmentRepository
+    public class GIDDatabaseRepository : ICustomerRepository, IProjectManagerRepository,
+        IEmployeeRepository, IAssignmentRepository, ICompanyRepository, IProjectRepository
     {
 
         private readonly GIDDatabaseContext _context;
@@ -29,6 +30,53 @@ namespace GetItDone_Database.Repository
 
         public async Task<IEnumerable<Assignment>> AssignmentsAsync() => await _context.Assignments.AsNoTracking().ToListAsync();
 
+        public async Task<IEnumerable<Company>> CompanysAsync() => await _context.Companies.AsNoTracking().ToListAsync();
+        
+
+        public async Task<Company> CompanyAsync(int id)
+        {
+            var company = await _context.Companies.FindAsync(id);
+
+            if (company is null) return null;
+
+            return company;
+        }
+
+        public Task CreateAssignmenAsync(Assignment assignment)
+        {
+            _context.Add(assignment);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task CreateCompanyAsync(Company company)
+        {
+            _context.Add(company);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task CreateCustomerAsync(Customer customer)
+        {
+            _context.Add(customer);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task CreateEmployeeAsync(Employee employee)
+        {
+            _context.Add(employee);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task CreateProjectManager(ProjectManager projectManager)
+        {
+            _context.Add(projectManager);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
         public async Task<Customer> CustomerAsync(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
@@ -41,31 +89,38 @@ namespace GetItDone_Database.Repository
 
         public async Task<IEnumerable<Customer>> CustomersAsync() => await _context.Customers.AsNoTracking().ToListAsync();
 
-        public Task DeleteAssignmentAsync(int id)
+        public Task DeleteAssignmentAsync(Assignment assignment)
         {
-            var assignment = AssignmentAsync(id);
             _context.Remove(assignment);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
-        public Task DeleteCustomerAsync(int id)
+        public Task DeleteCompanyAsync(Company company)
         {
-            var customer = CustomerAsync(id);
+            _context.Remove(company);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteCustomerAsync(Customer customer)
+        {
             _context.Remove(customer);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
-        public Task DeleteEmployeeAsync(int id)
+        public Task DeleteEmployeeAsync(Employee employee)
         {
-            var employee = EmployeeAsync(id);
             _context.Remove(employee);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
-        public Task DeleteProjectManagerAsync(int id)
+        public Task DeleteProjectManagerAsync(ProjectManager projectManager)
         {
-            var projectManager = ProjectManagerAsync(id);
             _context.Remove(projectManager);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
@@ -93,29 +148,67 @@ namespace GetItDone_Database.Repository
 
         public Task UpdateAssignmentAsync(Assignment assignment)
         {
-            _context.Attach(assignment);
-            _context.Entry(assignment).State = EntityState.Modified;
+            _context.Update(assignment);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateCompanyAsync(Company company)
+        {
+            _context.Update(company);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
         public Task UpdateCustomerAsync(Customer customer)
         {
-            _context.Attach(customer);
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Update(customer);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
         public Task UpdateEmployeeAsync(Employee employee)
         {
-            _context.Attach(employee);
-            _context.Entry(employee).State = EntityState.Modified;
+            _context.Update(employee);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
         public Task UpdateProjectManagerAsync(ProjectManager projectManager)
         {
-            _context.Attach(projectManager);
-            _context.Entry(projectManager).State = EntityState.Modified;
+            _context.Update(projectManager);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public async Task<IEnumerable<Project>> ProjectsAsync() => await _context.Projects.AsNoTracking().ToListAsync();
+
+        public async Task<Project> ProjectAsync(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+
+            if (project is null) return null;
+
+            return project;
+        }
+
+        public Task CreateProject(Project project)
+        {
+            _context.Add(project);
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteProjectAsync(Project project)
+        {
+            _context.Remove(project);
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateProjectAsync(Project project)
+        {
+            _context.Update(project);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
     }

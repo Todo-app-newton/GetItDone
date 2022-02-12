@@ -21,11 +21,32 @@ namespace GetItDone_Backend.Helpers
         public static void ConfigureDependencyInjection(this IServiceCollection service)
         {
 
+            //Database
             service.AddScoped<IAssignmentRepository, GIDDatabaseRepository>();
             service.AddScoped<ICustomerRepository, GIDDatabaseRepository>();
             service.AddScoped<IEmployeeRepository, GIDDatabaseRepository>();
             service.AddScoped<IProjectManagerRepository, GIDDatabaseRepository>();
+            service.AddScoped<ICompanyRepository, GIDDatabaseRepository>();
+            service.AddScoped<IProjectRepository, GIDDatabaseRepository>();
 
+            //Services 
+            service.AddScoped<IProjectManagerService, ProjectManagerService>();
+            service.AddScoped<ICompanyService, CompanyService>();
+            service.AddScoped<ICustomerService, CustomerService>();
+            service.AddScoped<IEmployeeService, EmployeeService>();
+            service.AddScoped<IProjectService, ProjectService>();
+            service.AddScoped<IAssignmentService, AssignmentService>();
+            service.AddScoped<GIDDatabaseRepository>();
+
+            //Controllers
+            service.AddScoped<ProjectManagerService>();
+            service.AddScoped<CompanyService>();
+            service.AddScoped<CustomerService>();
+            service.AddScoped<ProjectService>();
+            service.AddScoped<EmployeeService>();
+            service.AddScoped<AssignmentService>();
+
+            //Auth
             service.AddScoped<IAuthenticationService, AuthenticationService>();
             service.AddScoped<AuthenticationService>();
         }
