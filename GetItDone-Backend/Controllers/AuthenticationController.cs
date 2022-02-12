@@ -61,7 +61,7 @@ namespace GetItDone_Backend.Controllers
                 return BadRequest("Something happen, try again!");
             }
 
-            return NotFound("No Email exists with that email, try again!");
+            return NotFound("No account exists with that email, try again!");
         }
     }
 }

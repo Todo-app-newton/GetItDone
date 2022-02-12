@@ -1,9 +1,37 @@
-﻿body {
-    
+﻿
+body {
+
+}
+.container-fluid {
+}
+/* top | right | bottom | left */
+.m-auto {
+    background-color: none;
+    padding-top: 1em;
+    height: 100vh;
+    box-shadow: inset 0px 0px 4px 2px rgba(0,0,0,1);
 }
 
-.m-auto {
-    padding-top: 10em;
+.m-auto img{
+    margin: 8em;
 }
+
+.img-holder {
+    margin: 10em;
+    border: 2px solid #30638e;
+}
+
+body > #root > div {
+    height: 100vh;
+}
+
+Form {
+    margin: 10em;
+    background-color: white;
+    padding: 2em;
+    border-radius: 5px;
+    /*box-shadow: 10px 5px 5px black;*/
+}
+
 
 

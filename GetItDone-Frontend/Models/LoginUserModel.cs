@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace GetItDone_Frontend.Models
     public class LoginUserModel
     {
         //[DataType(DataType.EmailAddress)]
-        public string UserEmail { get; set; }
+        [JsonProperty("email")]
+        public string Email { get; set; }
 
         //[DataType(DataType.Password)]
+        [JsonProperty("password")]
         public string Password { get; set; }
     }
 }
