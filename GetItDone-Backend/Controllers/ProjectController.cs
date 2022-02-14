@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +14,9 @@ namespace GetItDone_Backend.Controllers
     public class ProjectController : ControllerBase
     {
 
-        private readonly ProjectService _projectService;
+        private readonly IProjectService _projectService;
         private readonly IMapper _autoMapper;
-        public ProjectController(ProjectService projectService, IMapper autoMapper)
+        public ProjectController(IProjectService projectService, IMapper autoMapper)
         {
             _projectService = projectService;
             _autoMapper = autoMapper;

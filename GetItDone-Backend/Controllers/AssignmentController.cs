@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -15,9 +14,9 @@ namespace GetItDone_Backend.Controllers
     public class AssignmentController : ControllerBase
     {
 
-        private readonly AssignmentService _assingmentService;
+        private readonly IAssignmentService _assingmentService;
         private readonly IMapper _autoMapper;
-        public AssignmentController(IMapper autoMapper, AssignmentService assingmentService)
+        public AssignmentController(IMapper autoMapper, IAssignmentService assingmentService)
         {
             _autoMapper = autoMapper;
             _assingmentService = assingmentService;

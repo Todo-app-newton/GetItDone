@@ -1,21 +1,20 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly EmployeeService _employeeService;
+        private readonly IEmployeeService _employeeService;
         private readonly IMapper _autoMapper;
-        public EmployeeController(EmployeeService employeeService, IMapper autoMapper)
+        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper)
         {
             _employeeService = employeeService;
             _autoMapper = autoMapper;
