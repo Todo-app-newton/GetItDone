@@ -10,14 +10,17 @@ using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
 {
-    public class EmployeeController : Controller
+    [ApiController]
+    public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IAssignmentService _assignmentService;
         private readonly IMapper _autoMapper;
-        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper)
+        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper, IAssignmentService assignmentService)
         {
             _employeeService = employeeService;
             _autoMapper = autoMapper;
+            _assignmentService = assignmentService;
         }
 
 
@@ -28,10 +31,29 @@ namespace GetItDone_Backend.Controllers
             try
             {
                 var employees = await _employeeService.GetEmployeesAsync();
-
                 if (employees is null) return NotFound("No ProjectManagers could be found");
 
                 return Ok(_autoMapper.Map<List<EmployeeViewModel>>(employees));
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("api/employee/Assignments/{email}")]
+        public async Task<IActionResult> GetEmployeeAssignments(string email)
+        {
+            try
+            {
+                var employeesAssignments = await _employeeService.GetAllEmployeeAssignments(email);
+
+                if (employeesAssignments is null) return NotFound();
+
+                return Ok(_autoMapper.Map<List<AssignmentViewModel>>(employeesAssignments));
             }
             catch (Exception)
             {
@@ -58,6 +80,28 @@ namespace GetItDone_Backend.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [Route("api/employee/completeAssignment")]
+        public async Task<IActionResult> CompleteAssignment(int id)
+        {
+            try
+            {
+                var assignment = await _assignmentService.GetAssignmentAsync(id);
+                var IsCompleted = await _assignmentService.CompleteAssignmnet(assignment);
+
+                if (IsCompleted)
+                    return Ok("Assignment successfully completed");
+                else
+                    return BadRequest("Assignment could not be completed, try again");
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+
 
         [HttpDelete]
         [Route("api/employee/{id}")]

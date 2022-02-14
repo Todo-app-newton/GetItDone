@@ -1,5 +1,6 @@
 ﻿using GetItDone_Database.Repository;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Enums;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using System;
@@ -17,6 +18,8 @@ namespace GetItDone_Business.Services
         {
             _databaseRepo = databaseRepo;
         }
+
+
 
         public bool CreateEmployeeAsync(Employee createEmployee)
         {
@@ -51,6 +54,41 @@ namespace GetItDone_Business.Services
                 if (employee is null) return false;
 
                 return _databaseRepo.DeleteEmployeeAsync(employee).IsCompletedSuccessfully;
+            }
+            catch (Exception)
+            {
+                //Implementing logger at later stage.
+                throw;
+            }
+        }
+
+
+        public async Task<IEnumerable<Assignment>> GetAllEmployeeAssignments(string email)
+        {
+            try
+            {
+                var employee = await _databaseRepo.GetEmployeeByEmail(email);
+                var assignments = await _databaseRepo.AssignmentsAsync();
+
+                var allEmployeesAssignments = new List<Assignment>();
+
+                foreach (var assign in assignments.Where(x => x.EmployeeId.Equals(employee.Id)))
+                {
+                    var newAssignment = new Assignment
+                    {
+                        Id = assign.Id,
+                        Title = assign.Title,
+                        Description = assign.Description,
+                        Period = assign.Period,
+                        Progress = (Progress)Enum.Parse(typeof(Progress), assign.Progress.ToString()),
+                        ProjectId = assign.ProjectId,
+                        EmployeeId = employee.Id
+                    };
+
+                    allEmployeesAssignments.Add(newAssignment);
+                }
+
+                return allEmployeesAssignments;
             }
             catch (Exception)
             {
