@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Container, Form } from 'reactstrap';
-import logo from './logo.png';
+import logo from './logo.jpg';
 import background from './background-login2.jpg';
 import './Login/Login.css'
 
@@ -37,7 +37,11 @@ export class Login extends Component {
         }).then(r => r.json()).then(res => {
             if (res) {
                 console.log(res);
+                localStorage.setItem("user", JSON.stringify(response.data));
+                this.sleep(50000)
             }
+            else
+                console.log(res)
             this.sleep(50000)
         });
         //this.sendLogin(password);

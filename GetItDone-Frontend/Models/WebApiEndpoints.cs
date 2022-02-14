@@ -8,7 +8,7 @@ namespace GetItDone_Frontend.Models
 {
     public class WebApiEndpoints : IWebApiEndpoints
     {
-        private string HostName => "https://localhost:44351/";
+        private string HostName => "https://localhost:5001/";
 
         public string LoginUser => HostName + "api/Login";
 

@@ -26,29 +26,30 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-          <Container>
-                    <NavbarBrand tag={Link} to="/">
-                        <img fluid
-                            className="img-nav"
-                            src={logo}
-                            alt="logo"
-                        />
-                    </NavbarBrand>
+            <NavbarBrand>
+                <img fluid
+                    className="img-nav"
+                    src={logo}
+                    alt="logo"
+                />
+            </NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">User</NavLink>
+                <NavItem style={{ padding: "1em" }}>
+                    <NavLink tag={Link} className="text-dark" to="/">User page</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">Assignments</NavLink>
+                        <NavItem style={{ padding: "1em" }}>
+                    <NavLink tag={Link} className="text-dark" to="/counter">Assignments</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                        <NavItem style={{ padding: "1em" }}>
+                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Contact</NavLink>
+                </NavItem>
+                        <NavItem style={{ padding: "1em" }}>
+                    <NavLink tag={Link} className="text-dark" to="/" style={{paddingLeft: "10em"}}>Sign Out</NavLink>
                 </NavItem>
               </ul>
             </Collapse>
-          </Container>
         </Navbar>
       </header>
     );

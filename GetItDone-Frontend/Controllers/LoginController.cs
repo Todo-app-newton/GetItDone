@@ -30,53 +30,34 @@ namespace GetItDone_Frontend.Controllers
         [HttpPost]
         public LoginUserModel Post([FromBody]LoginUserModel login)
         {
-            return login;
-            /*if (login.Email == null || login.Password == null)
+            var newLoginRequest = new LoginRequest()
             {
-                return BadRequest("Error");
-            }
-            else
+                Email = login.Email,
+                Password = login.Password
+
+            };
+            string jsonLogin = JsonConvert.SerializeObject(newLoginRequest);
+            var httpContent = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
+
+            using (HttpClient client = new HttpClient())
             {
-                var newLoginRequest = new LoginRequest()
+                var response = client.PostAsync(new Uri(endpoints.LoginUser), httpContent).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    Email = login.Email,
-                    Password = login.Password
-
-                };
-                string jsonLogin = JsonConvert.SerializeObject(newLoginRequest);
-                var httpContent = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
-
-                using (HttpClient client = new HttpClient())
-                {
-                    var response = client.PostAsync(new Uri(endpoints.LoginUser), httpContent).Result;
-
-                   if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                        return Ok(login);
-                   else
-                    { return BadRequest(); }
+                    return (new LoginUserModel
+                    {
+                        Email = "Jippi"
+                    });
                 }
-
-            }*/
-
-        }
-
-
-        /*public string GetToken(string username, string password)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var userForm = new Dictionary<string, string>
-                        {
-                            {"UserName", username },
-                            {"Password", password },
-                            {"grant_type", "password" }
-                        };
-                var content = new FormUrlEncodedContent(userForm);
-                var response = httpClient.PostAsync(endpoints.GetToken, content).Result;
-                var token = response.Content.ReadAsAsync<TokenDto>(new[] { new JsonMediaTypeFormatter() }).Result;
-
-                return token.AccessToken;
+                else
+                {
+                    return (new LoginUserModel
+                    {
+                        Email = "Error"
+                    });
+                }
             }
-        }*/
+        }
     }
 }
