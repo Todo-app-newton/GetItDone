@@ -13,5 +13,6 @@ namespace GetItDone_Models.Interfaces.Repository
         Task DeleteEmployeeAsync(Employee employee);
         Task UpdateEmployeeAsync(Employee employee);
         Task CreateEmployeeAsync(Employee employee);
+        Task<Employee> GetEmployeeByEmail(string email);
     }
 }

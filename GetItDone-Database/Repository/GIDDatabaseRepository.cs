@@ -5,6 +5,7 @@ using GetItDone_Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Database.Repository
@@ -21,7 +22,7 @@ namespace GetItDone_Database.Repository
 
         public async Task<Assignment> AssignmentAsync(int id)
         {
-            var assignment = await _context.Assignments.FindAsync(id);
+            var assignment = await _context.Assignments.Where(x => x.Id == id).AsNoTracking().SingleOrDefaultAsync();
 
             if (assignment is null) return null;
 
@@ -137,7 +138,7 @@ namespace GetItDone_Database.Repository
 
         public async Task<ProjectManager> ProjectManagerAsync(int id)
         {
-            var projectManager = await _context.ProjectManagers.FindAsync(id);
+            var projectManager = await _context.ProjectManagers.Where(x => x.Id == id).AsNoTracking().SingleOrDefaultAsync();
 
             if (projectManager is null) return null;
 
@@ -146,11 +147,10 @@ namespace GetItDone_Database.Repository
 
         public async Task<IEnumerable<ProjectManager>> ProjectManagersAsync() => await _context.ProjectManagers.AsNoTracking().ToListAsync();
 
-        public Task UpdateAssignmentAsync(Assignment assignment)
+        public async Task UpdateAssignmentAsync(Assignment assignment)
         {
             _context.Update(assignment);
-            _context.SaveChangesAsync();
-            return Task.CompletedTask;
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateCompanyAsync(Company company)
@@ -210,6 +210,15 @@ namespace GetItDone_Database.Repository
             _context.Update(project);
             _context.SaveChangesAsync();
             return Task.CompletedTask;
+        }
+
+        public async Task<Employee> GetEmployeeByEmail(string email)
+        {
+            var employee = await _context.Employees.Where(x => x.Email == email).AsNoTracking().SingleAsync();
+
+            if (employee is null) return null;
+
+            return employee;
         }
     }
 }
