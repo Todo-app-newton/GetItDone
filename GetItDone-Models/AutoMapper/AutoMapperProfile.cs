@@ -24,6 +24,7 @@ namespace GetItDone_Models.AutoMapper
             CreateMap<Company, CompanyViewModel>();
             CreateMap<Project, ProjectViewModel>();
             CreateMap<Employee, EmployeeViewModel>();
+            CreateMap<Assignment, AssignmentViewModel>();
         }
     }
 }
