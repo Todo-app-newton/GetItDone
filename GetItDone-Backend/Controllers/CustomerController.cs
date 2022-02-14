@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -15,9 +14,9 @@ namespace GetItDone_Backend.Controllers
     public class CustomerController : ControllerBase
     {
 
-        private readonly CustomerService _customerService;
+        private readonly ICustomerService _customerService;
         private readonly IMapper _autoMapper;
-        public CustomerController(CustomerService customerService, IMapper mapper)
+        public CustomerController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
             _autoMapper = mapper;

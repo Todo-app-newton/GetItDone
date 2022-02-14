@@ -28,6 +28,7 @@ namespace GetItDone_Backend.Helpers
             service.AddScoped<IProjectManagerRepository, GIDDatabaseRepository>();
             service.AddScoped<ICompanyRepository, GIDDatabaseRepository>();
             service.AddScoped<IProjectRepository, GIDDatabaseRepository>();
+            service.AddScoped<IAuthenticationService, AuthenticationService>();
 
             //Services 
             service.AddScoped<IProjectManagerService, ProjectManagerService>();
@@ -38,17 +39,6 @@ namespace GetItDone_Backend.Helpers
             service.AddScoped<IAssignmentService, AssignmentService>();
             service.AddScoped<GIDDatabaseRepository>();
 
-            //Controllers
-            service.AddScoped<ProjectManagerService>();
-            service.AddScoped<CompanyService>();
-            service.AddScoped<CustomerService>();
-            service.AddScoped<ProjectService>();
-            service.AddScoped<EmployeeService>();
-            service.AddScoped<AssignmentService>();
-
-            //Auth
-            service.AddScoped<IAuthenticationService, AuthenticationService>();
-            service.AddScoped<AuthenticationService>();
         }
 
 
