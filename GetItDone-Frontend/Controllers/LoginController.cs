@@ -1,14 +1,11 @@
-﻿using GetItDone_Frontend.Models;
+﻿using GetItDone_Frontend.Helpers;
+using GetItDone_Frontend.Models;
 using GetItDone_Models.Models;
-using Microsoft.AspNetCore.Http;
+using GetItDone_Models.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,36 +25,51 @@ namespace GetItDone_Frontend.Controllers
         }
 
         [HttpPost]
-        public LoginUserModel Post([FromBody]LoginUserModel login)
+        public async Task<LoginResponse> Post([FromBody]LoginUserModel login)
         {
-            var newLoginRequest = new LoginRequest()
+            if (ModelState.IsValid)
             {
-                Email = login.Email,
-                Password = login.Password
+                var newLoginRequest = new LoginRequest()
+                {
+                    Email = login.Email,
+                    Password = login.Password
 
-            };
-            string jsonLogin = JsonConvert.SerializeObject(newLoginRequest);
-            var httpContent = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
+                };
+                var response = await GetToken(newLoginRequest);
 
-            using (HttpClient client = new HttpClient())
+                var identity = new LoginResponse
+                {
+                    Email = login.Email,
+                    Token = response.Token,
+                    IsLoggedIn = response.IsLoggedIn,
+                    Roles = response.Roles
+                };
+
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "identity", identity);
+
+                return identity;
+            }
+            return null;
+        }
+
+
+        private async Task<LoginResponse> GetToken(LoginRequest request)
+        {
+            using (var _httpClient = new HttpClient())
             {
-                var response = client.PostAsync(new Uri(endpoints.LoginUser), httpContent).Result;
+                var loginValue = JsonConvert.SerializeObject(request);
+                var content = new StringContent(loginValue, Encoding.UTF8, "Application/json");
+                var requestUrl = "https://localhost:5001/api/Login";
 
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                var response = await _httpClient.PostAsync(requestUrl, content);
+                if (response.IsSuccessStatusCode)
                 {
-                    return (new LoginUserModel
-                    {
-                        Email = "Jippi"
-                    });
-                }
-                else
-                {
-                    return (new LoginUserModel
-                    {
-                        Email = "Error"
-                    });
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    var jsonString = JsonConvert.DeserializeObject<LoginResponse>(result);
+                    return jsonString;
                 }
             }
+            return null;
         }
     }
 }

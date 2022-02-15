@@ -40,14 +40,13 @@ export class NavMenu extends Component {
                     <NavLink tag={Link} className="text-dark" to="/">User page</NavLink>
                 </NavItem>
                         <NavItem style={{ padding: "1em" }}>
-                    <NavLink tag={Link} className="text-dark" to="/counter">Assignments</NavLink>
-                </NavItem>
-                        <NavItem style={{ padding: "1em" }}>
-                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Contact</NavLink>
-                </NavItem>
+                            <NavLink tag={Link} className="text-dark" to="/Assignment" style={{ paddingLeft: "10em" }}>Assignments</NavLink>
+                        </NavItem>
+
                         <NavItem style={{ padding: "1em" }}>
                     <NavLink tag={Link} className="text-dark" to="/" style={{paddingLeft: "10em"}}>Sign Out</NavLink>
                 </NavItem>
+
               </ul>
             </Collapse>
         </Navbar>
