@@ -17,19 +17,56 @@ namespace GetItDone_Frontend.Controllers
     [Route("api/[controller]")]
     public class AssignmentController : ControllerBase
     {
-        private static string Url => "http://localhost:5000/api/Assignments/";
+        private static string Url => "https://localhost:5001/api/Assignments/";
 
 
         [HttpPost("Complete")]
-        public async Task Complete([FromBody] AssignmentsIdViewModel employeeIdViewModel)
+        public async Task Complete([FromBody] AssignmentsIdViewModel assignmentsIdViewModel)
         {
             if (ModelState.IsValid)
             {
                 using (var _httpCLient = new HttpClient())
                 {
-                    var serialized = JsonConvert.SerializeObject(employeeIdViewModel);
+                    var url = Url + "completeAssignment";
+                    var session = SessionHelper.GetObjectFromJson<LoginResponse>(HttpContext.Session, "identity");
+                    _httpCLient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.Token);
+                    var serialized = JsonConvert.SerializeObject(assignmentsIdViewModel);
                     var content = new StringContent(serialized, Encoding.UTF8, "application/json");
-                    var response = await _httpCLient.PostAsync(Url, content);
+                    var response = await _httpCLient.PostAsync(url, content);
+                }
+            }
+        }
+
+        [HttpPut("UpdateAssignment")]
+        public async Task UpdateAssignment([FromBody] AssignmentViewModelEdit assignmentViewModelEdit)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var _httpClient = new HttpClient())
+                {
+                    var session = SessionHelper.GetObjectFromJson<LoginResponse>(HttpContext.Session, "identity");
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.Token);
+                    var serialized = JsonConvert.SerializeObject(assignmentViewModelEdit);
+                    var content = new StringContent(serialized, Encoding.UTF8, "application/json");
+                    var response = await _httpClient.PutAsync(Url, content);
+                }
+            }
+        }
+
+
+        [HttpPost("Start")]
+        public async Task Start([FromBody] AssignmentsIdViewModel assignmentsIdViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var _httpCLient = new HttpClient())
+                {
+                    var url = Url + "startAssignment";
+                    var session = SessionHelper.GetObjectFromJson<LoginResponse>(HttpContext.Session, "identity");
+                    _httpCLient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.Token);
+                    var serialized = JsonConvert.SerializeObject(assignmentsIdViewModel);
+                    var content = new StringContent(serialized, Encoding.UTF8, "application/json");
+                    var response = await _httpCLient.PostAsync(url, content);
                 }
             }
         }
