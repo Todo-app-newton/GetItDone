@@ -11,7 +11,6 @@ export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clickButton: false,
             isLoggedIn: false,
             loginUser:{
                 email: '',
@@ -26,7 +25,7 @@ export class Login extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleSubmit = (e) => {
+    handleSubmit(e) {
         let loginUserModel = {
             Email: this.state.email,
             Password:this.state.password
@@ -37,26 +36,19 @@ export class Login extends Component {
             headers: { 'Content-type': 'application/json' },
             credentials: 'include',
             body: JSON.stringify(loginUserModel)
-        }).then(response => this.setState({ isLoggedIn: response.data.IsLoggedIn }))
-            .catch(error => {
-                console.log("There was an erro!", error);
-            });
-    }
-
-    Authenticated = () => {
-        if (!this.state.isLoggedIn) {
-            return <Redirect to='/login' />
-        } else {
-            return <Redirect to='/Profile' />
-        }
-    }
-
-    sleep(milliseconds) {
-        const date = Date.now();
-        let currentDate = null;
-        do {
-            currentDate = Date.now();
-        } while (currentDate - date < milliseconds);
+        }).then(r => r.json()).then(res => {
+            if (res.email) {
+                console.log(res);
+                this.state.isLoggedIn = true;
+                this.props.history.push({
+                    pathname: '/profile-page',
+                    state: { email: res.email }
+                })
+            }
+            else {
+                <Redirect to='/Login' />
+            }
+        });
     }
 
     render() {

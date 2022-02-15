@@ -4,7 +4,7 @@
 }
 
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 @media (min-width: 768px) {
   html {
@@ -17,10 +17,11 @@ html {
 }
 
 .img-nav {
-    max-width:50%;
+    max-width:20%;
     margin: 0;
     padding: 0;
 }
+
 
 
 

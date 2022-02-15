@@ -9,7 +9,7 @@ body {
     background-color: none;
     padding-top: 1em;
     height: 100vh;
-    box-shadow: inset 0px 0px 4px 2px rgba(0,0,0,1);
+    box-shadow: inset 0rem 0rem .20rem 0rem rgba(0,0,0,1);
 }
 
 .m-auto img{
@@ -30,7 +30,6 @@ Form {
     background-color: white;
     padding: 2em;
     border-radius: 5px;
-    /*box-shadow: 10px 5px 5px black;*/
 }
 
 
