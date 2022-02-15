@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace GetItDone_Frontend
 {
@@ -28,6 +29,14 @@ namespace GetItDone_Frontend
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSession(opt =>
+            {
+                opt.IdleTimeout = TimeSpan.FromHours(2);
+                opt.Cookie.HttpOnly = true;
+                opt.Cookie.IsEssential = true;
+            });
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +58,7 @@ namespace GetItDone_Frontend
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

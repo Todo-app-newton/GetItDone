@@ -10,6 +10,7 @@ namespace GetItDone_Models.Models
         public static string SecretKey { get; set; }
         public static string ProjectManagerPassword { get; set; }
         public static string EmployeePassword { get; set; }
+        public static string ElectricianPassword { get; set; }
         public static string CompanyPassword { get; set; }
     }
 }

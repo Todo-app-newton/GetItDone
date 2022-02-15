@@ -9,6 +9,8 @@ namespace GetItDone_Models.Interfaces.Services
         Task<IEnumerable<Assignment>> GetAssignmentsAsync();
         bool CreateAssignmentAsync(Assignment createAssignment);
         Task<Assignment> GetAssignmentAsync(int id);
+        Task<bool> CompleteAssignmnet(Assignment assignment);
+
         Task<bool> DeleteAssignmentAsync(int id);
         bool UpdateAssignmentAsync(Assignment updateAssignment);
     }

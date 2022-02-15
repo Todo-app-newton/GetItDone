@@ -7,10 +7,11 @@ namespace GetItDone_Models.ViewModels
 {
    public class AssignmentViewModel
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Period { get; set; }
-        public Progress Progress { get; set; }
+        public string Progress { get; set; }
 
         public int ProjectId { get; set; }
 

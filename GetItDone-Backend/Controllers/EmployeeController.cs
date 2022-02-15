@@ -3,6 +3,7 @@ using GetItDone_Models.DTO;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
 {
-    public class EmployeeController : Controller
+    [ApiController]
+    public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _autoMapper;
-        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper)
+        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper, IAssignmentService assignmentService)
         {
             _employeeService = employeeService;
             _autoMapper = autoMapper;
@@ -23,12 +25,12 @@ namespace GetItDone_Backend.Controllers
 
         [HttpGet]
         [Route("api/employees")]
+     
         public async Task<IActionResult> GetEmployees()
         {
             try
             {
                 var employees = await _employeeService.GetEmployeesAsync();
-
                 if (employees is null) return NotFound("No ProjectManagers could be found");
 
                 return Ok(_autoMapper.Map<List<EmployeeViewModel>>(employees));
@@ -39,6 +41,9 @@ namespace GetItDone_Backend.Controllers
                 throw;
             }
         }
+
+
+  
 
         [HttpGet]
         [Route("api/employee/{id}")]
@@ -59,8 +64,10 @@ namespace GetItDone_Backend.Controllers
             }
         }
 
+
         [HttpDelete]
         [Route("api/employee/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             try
@@ -81,6 +88,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/employee")]
+        [Authorize("ProjectManager")]
         public IActionResult CreateEmployee([FromBody] EmployeeDTO employeeDTO)
         {
             try
@@ -102,6 +110,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/employee/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> UpdateEmployee(int id, EmployeeDTO employeeDto)
         {
             try

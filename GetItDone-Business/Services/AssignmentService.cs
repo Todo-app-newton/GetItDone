@@ -1,5 +1,6 @@
 ﻿using GetItDone_Database.Repository;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Enums;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using System;
@@ -37,6 +38,32 @@ namespace GetItDone_Business.Services
 
 
                 return _databaseRepo.CreateAssignmenAsync(newAssignment).IsCompletedSuccessfully;
+            }
+            catch (Exception)
+            {
+                //Implementing logger at later stage.
+                throw;
+            }
+        }
+        public async Task<bool> CompleteAssignmnet(Assignment assignment)
+        {
+            try
+            {
+
+                var completeAssignment = new Assignment
+                {
+                    Id = assignment.Id,
+                    Title = assignment.Title,
+                    Description = "fuck u",
+                    Period = assignment.Period,
+                    Progress = Progress.Completed,
+                    EmployeeId = assignment.EmployeeId,
+                    ProjectId = assignment.ProjectId
+                };
+
+                await _databaseRepo.UpdateAssignmentAsync(completeAssignment);
+
+                return true;
             }
             catch (Exception)
             {
