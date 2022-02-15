@@ -5,6 +5,7 @@ import { Login } from './components/Login';
 import { Assignment } from './components/Assignment/Assignment';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
+import { Employee } from './components/Employee/Employee';
 
 import './custom.css'
 
@@ -21,6 +22,7 @@ export default class App extends Component {
                     <Route path='/Assignment' component={Assignment} />
                     <Route path='/counter' component={Counter} />
                     <Route path='/fetch-data' component={FetchData} />
+                    <Route path='/Employee' component={Employee} />
                 </Layout>
             </Switch>
         );
