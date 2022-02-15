@@ -46,16 +46,11 @@ export class Login extends Component {
         if (!this.state.isLoggedIn) {
             return <Redirect to='/login' />
         } else {
-            return <Redirect to='/Profile' />
+            this.props.history.push({
+                pathname: '/profile-page',
+                state: { email: res.email }
+            })
         }
-    }
-
-    sleep(milliseconds) {
-        const date = Date.now();
-        let currentDate = null;
-        do {
-            currentDate = Date.now();
-        } while (currentDate - date < milliseconds);
     }
 
     render() {
