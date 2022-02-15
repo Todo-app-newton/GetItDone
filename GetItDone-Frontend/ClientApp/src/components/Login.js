@@ -10,7 +10,6 @@ export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clickButton: false,
             isLoggedIn: false,
             loginUser:{
                 email: '',
@@ -25,7 +24,9 @@ export class Login extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleSubmit = () => {
+    handleSubmit(e) {
+
+        e.preventDefault();
         let loginUserModel = {
             Email: this.state.email,
             Password:this.state.password
@@ -37,14 +38,15 @@ export class Login extends Component {
         }).then(r => r.json()).then(res => {
             if (res) {
                 console.log(res);
-                localStorage.setItem("user", JSON.stringify(response.data));
-                this.sleep(50000)
+                this.state.isLoggedIn=true;
+                this.props.history.push({
+                    pathname: '/profile-page',
+                    state: { email: res.email }
+                })
             }
             else
                 console.log(res)
-            this.sleep(50000)
         });
-        //this.sendLogin(password);
     }
 
     sleep(milliseconds) {
