@@ -3,6 +3,7 @@ using GetItDone_Models.DTO;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpDelete]
         [Route("api/project/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> DeleteProject(int id)
         {
             try
@@ -83,6 +85,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/project")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> CreateProject([FromBody] ProjectDTO projectDTO)
         {
             try
@@ -104,6 +107,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/project/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> UpdateProject(int id, ProjectDTO projectDTO)
         {
             try

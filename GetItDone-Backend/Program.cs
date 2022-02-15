@@ -41,7 +41,12 @@ namespace GetItDone_Backend
                         var employee = new IdentityUser()
                         {
                             UserName = "Painter",
-                            Email = "Paiter@Skanska.com"
+                            Email = "Painter@Skanska.com"
+                        };
+                        var employeeTwo = new IdentityUser()
+                        {
+                            UserName = "Electrician",
+                            Email = "Electrician@Skanska.com"
                         };
                         var company = new IdentityUser()
                         {
@@ -50,14 +55,18 @@ namespace GetItDone_Backend
                         };
 
                         userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();                      
-                        userManager.CreateAsync(employee, AppSettings.EmployeePassword).GetAwaiter().GetResult();
+                        userManager.CreateAsync(employeeTwo, AppSettings.ElectricianPassword).GetAwaiter().GetResult();
                         userManager.CreateAsync(company, AppSettings.CompanyPassword).GetAwaiter().GetResult();
-                        
+                        userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();
+
+
                         var projectManagerClaim = new Claim("Role", "Project Manager");
+                        var employeeTwoClaim = new Claim("Role", "Employee");
                         var employeeClaim = new Claim("Role", "Employee");
                         var companyClaim = new Claim("Role", "Company");
 
                         userManager.AddClaimAsync(projectManager, projectManagerClaim).GetAwaiter().GetResult();
+                        userManager.AddClaimAsync(employeeTwo, employeeTwoClaim).GetAwaiter().GetResult();
                         userManager.AddClaimAsync(employee, employeeClaim).GetAwaiter().GetResult();
                         userManager.AddClaimAsync(company, companyClaim).GetAwaiter().GetResult();
                     

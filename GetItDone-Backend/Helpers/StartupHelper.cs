@@ -41,6 +41,21 @@ namespace GetItDone_Backend.Helpers
 
         }
 
+        public static void ConfigureCors(this IServiceCollection service)
+        {
+            service.AddCors(opt =>
+            {
+                opt.AddPolicy("Cors", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins(new[] { "https://localhost:44351" });
+                });
+            });
+        }
+
 
         public static void ConfigureAppSettingsValuesInjection(this IServiceCollection services, IConfiguration config)
         {
@@ -49,6 +64,7 @@ namespace GetItDone_Backend.Helpers
             AppSettings.ProjectManagerPassword = config.GetValue<string>("ProjectManagerPassword:Password");
             AppSettings.EmployeePassword = config.GetValue<string>("EmployeePassword:Password");
             AppSettings.CompanyPassword = config.GetValue<string>("CompanyPassword:Password");
+            AppSettings.ElectricianPassword = config.GetValue<string>("EmployeePassword:Password");
         }
     }
 }
