@@ -1,6 +1,8 @@
 ﻿import React, { Component } from 'react';
 import './Assignments.css'
 import headerImg from '../Assignments.png';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap';
+
 
 export class Assignment extends Component {
     static displayName = Assignment.name;
@@ -10,11 +12,19 @@ export class Assignment extends Component {
         this.complete = this.complete.bind(this);
         this.start = this.start.bind(this);
         this.edit = this.edit.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             pendingAssignmentsviewmodel: [],
             loading: true,
             startedAssignmentssviewmodel: [],
-            completedAssignmentssviewmodel: []
+            completedAssignmentssviewmodel: [],
+            showHide: false,
+            title: '',
+            description: '',
+            progress: '',
+            period: new Date(),
+            id: '',
         };
     }
 
@@ -22,6 +32,10 @@ export class Assignment extends Component {
         this.fetchPendingAssignments();
         this.fetchStartedAssignments();
         this.fetchCompletedAssignments();
+    }
+
+    handleChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
 
@@ -33,7 +47,7 @@ export class Assignment extends Component {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(employeeIdViewModel),
-        }).then(this.componentDidMount())
+        }).then(window.location.reload(false))
     }
     start = (event) => {
         let employeeIdViewModel = {
@@ -43,20 +57,29 @@ export class Assignment extends Component {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(employeeIdViewModel),
-        }).then(this.componentDidMount())
+        }).then(window.location.reload(false))
     }
-    edit = (event) => {
-        let employeeIdViewModel = {
-            Id: event.target.dataset.user
+    toggleModal = (event) => {
+        this.setState({ showHide: !this.state.showHide, id: event.target.dataset.user })
+    }
+    edit = (e) => {
+        let assignmentViewModelEdit = {
+            Id: this.state.id,
+            Title: this.state.title,
+            Description: this.state.description,
+            Period: this.state.period,
+            Progress: this.state.progress    
         };
-        fetch('api/assignment/Edit', {
+        e.preventDefault();
+        fetch('api/assignment/UpdateAssignment', {
             method: 'PUT',
             headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(employeeIdViewModel),
-        }).then(this.componentDidMount())
+            body: JSON.stringify(assignmentViewModelEdit),
+        }).then(window.location.reload(false))
     }
 
-    static renderPendingAssignments(pendingAssignmentsviewmodel, complete, start, edit) {
+
+    static renderPendingAssignments(pendingAssignmentsviewmodel, complete, start, toggleModal) {
         return (
               <table className='table table-striped' aria-labelledby="tabelLabel1">
                 <thead>
@@ -83,7 +106,7 @@ export class Assignment extends Component {
                             <td
                                 className="btn btn-primary"
                                 data-user={assignment.id}
-                                onClick={edit}
+                                onClick={toggleModal}
                             >Edit</td>
                             {assignment.progress != 'Start' ?
                                 <td
@@ -106,7 +129,7 @@ export class Assignment extends Component {
         );
     }
  
-    static renderStartedAssignments(startedAssignmentssviewmodel, complete, edit) {
+    static renderStartedAssignments(startedAssignmentssviewmodel, complete, toggleModal) {
         return (
             <table className='table table-striped' aria-labelledby="StartedLabel2">
                 <thead>
@@ -133,7 +156,7 @@ export class Assignment extends Component {
                             <td
                                 className="btn btn-info"
                                 data-user={assignment.id}
-                                onClick={edit}
+                                onClick={toggleModal}
                             >Edit</td>
                             {assignment.progress != 'Complete' ?
                                 <td
@@ -184,14 +207,16 @@ export class Assignment extends Component {
     render() {
         let pendingcontents = this.state.loading ?
             <p><em>Loading...</em></p> :
-            Assignment.renderPendingAssignments(this.state.pendingAssignmentsviewmodel, this.complete, this.start, this.edit);
+            Assignment.renderPendingAssignments(this.state.pendingAssignmentsviewmodel, this.complete, this.start, this.toggleModal);
         let startedcontents = this.state.loading ?
             <p><em>Loading...</em></p> :
-            Assignment.renderStartedAssignments(this.state.startedAssignmentssviewmodel, this.complete, this.edit);
+            Assignment.renderStartedAssignments(this.state.startedAssignmentssviewmodel, this.complete, this.toggleModal);
 
         let completedcontents = this.state.loading ?
             <p><em>Loading...</em></p> :
             Assignment.renderCompletedAssignments(this.state.completedAssignmentssviewmodel); 
+
+        let toggle = this.toggleModal;
 
         return (
             <div>
@@ -201,8 +226,6 @@ export class Assignment extends Component {
                     <img src={headerImg} alt="headerImg" className="assignmentImage" />
                     </div>
                  </container>
-
-
 
                 <h1 id="PendingLabel1" >Pending Assignments</h1>
                 <p>These are pending assignments </p>
@@ -215,6 +238,30 @@ export class Assignment extends Component {
                 <h1 id="tabelLabel3" >Completed Assignments</h1>
                 <p>These are Completed assignments </p>
                 {completedcontents}
+
+                <Modal isOpen={this.state.showHide}>
+                    <ModalHeader> Edit Assignment</ModalHeader>
+                    <ModalBody>
+                        <form>
+                            <div className="form-group">
+                            <label>Title</label>
+                                <input type="text" name="title" value={this.state.title} onChange={this.handleChange} placeholder="Titel"/>
+                            <label> Description</label>
+                                <input type="text" name="description" value={this.state.description} onChange={this.handleChange} placeholder="Description" />
+                            <label>Period</label>
+                                <input type="date" name="period" value={this.state.period} onChange={this.handleChange} placeholder="Period" />
+                                <label>Progress (0 = Pending, 1 = Started, 2 = Paused, 3 = Completed)</label>
+                                <input type="text" min="0" max="3" name="progress" value={this.state.progress} onChange={this.handleChange} placeholder="Progress" />
+                                <button type="submit"   className="btn btn-primary btn-block" onClick={this.edit}>Confirm </button>
+                        </div>
+                             </form> 
+                    </ModalBody>
+                    <ModalFooter>                      
+                                        {' '}
+                        <Button onClick={toggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
             </div>
             );
      }

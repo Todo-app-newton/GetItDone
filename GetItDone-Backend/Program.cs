@@ -54,7 +54,7 @@ namespace GetItDone_Backend
                             Email = "Skanska@info.com"
                         };
 
-                        userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();                      
+                        userManager.CreateAsync(employee, AppSettings.EmployeePassword).GetAwaiter().GetResult();                      
                         userManager.CreateAsync(employeeTwo, AppSettings.ElectricianPassword).GetAwaiter().GetResult();
                         userManager.CreateAsync(company, AppSettings.CompanyPassword).GetAwaiter().GetResult();
                         userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();

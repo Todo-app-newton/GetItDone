@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Enums;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
@@ -64,7 +65,7 @@ namespace GetItDone_Backend.Controllers
             }
         }
         [HttpPost]
-        [Route("api/completeAssignment")]
+        [Route("api/assignments/completeAssignment")]
         public async Task<IActionResult> CompleteAssignment(AssignmentsIdViewModel assignmentsIdViewModel)
         {
             try
@@ -72,6 +73,27 @@ namespace GetItDone_Backend.Controllers
                 var assignmentMapped = _autoMapper.Map<Assignment>(assignmentsIdViewModel);
                 var assignment = await _assingmentService.GetAssignmentAsync(assignmentMapped.Id);
                 var IsCompleted = await _assingmentService.CompleteAssignmnet(assignment);
+
+                if (IsCompleted)
+                    return Ok("Assignment successfully completed");
+                else
+                    return BadRequest("Assignment could not be completed, try again");
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+        [HttpPost]
+        [Route("api/assignments/startAssignment")]
+        public async Task<IActionResult> StartAssignment(AssignmentsIdViewModel assignmentsIdViewModel)
+        {
+            try
+            {
+                var assignmentMapped = _autoMapper.Map<Assignment>(assignmentsIdViewModel);
+                var assignment = await _assingmentService.GetAssignmentAsync(assignmentMapped.Id);
+                var IsCompleted = await _assingmentService.StartAssignmnet(assignment);
 
                 if (IsCompleted)
                     return Ok("Assignment successfully completed");
@@ -151,19 +173,18 @@ namespace GetItDone_Backend.Controllers
         }
 
         [HttpPut]
-        [Route("api/assignment/{id}")]
-        public async Task<IActionResult> UpdateAssignment(int id, AssignmentDTO assignmentDTO)
+        [Route("api/assignments")]
+        public async Task<IActionResult> UpdateAssignment(AssignmentViewModelEdit assignmentViewModelEdit)
         {
             try
             {
-                var fetchAssignment = await _assingmentService.GetAssignmentAsync(id);
+               var assignmentMapped = _autoMapper.Map<Assignment>(assignmentViewModelEdit);
+                var fetchAssignment = await _assingmentService.GetAssignmentAsync(assignmentMapped.Id);
 
-                fetchAssignment.Title = assignmentDTO.Title;
-                fetchAssignment.Description = assignmentDTO.Description;
-                fetchAssignment.Period = assignmentDTO.Period;
-                fetchAssignment.Progress = assignmentDTO.Progress;
-                fetchAssignment.ProjectId = assignmentDTO.ProjectId;
-                fetchAssignment.EmployeeId = assignmentDTO.EmployeeId;
+                fetchAssignment.Title = assignmentViewModelEdit.Title;
+                fetchAssignment.Description = assignmentViewModelEdit.Description;
+                fetchAssignment.Period = assignmentViewModelEdit.Period;
+                fetchAssignment.Progress = (Progress)Convert.ToInt32(assignmentViewModelEdit.Progress);
 
                 var isUpdated = _assingmentService.UpdateAssignmentAsync(fetchAssignment);
 

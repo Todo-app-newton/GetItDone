@@ -19,6 +19,8 @@ namespace GetItDone_Models.AutoMapper
             CreateMap<CompanyDTO, Company>();
             CreateMap<ProjectDTO, Project>();
             CreateMap<AssignmentsIdViewModel, Assignment>();
+            CreateMap<AssignmentViewModelEdit, Assignment>();
+
 
             //Outgoint to frontend
             CreateMap<ProjectManager, ProjectManagerViewModel>();

@@ -130,6 +130,33 @@ namespace GetItDone_Business.Services
             {
                 return _databaseRepo.UpdateAssignmentAsync(updateAssignment).IsCompletedSuccessfully;
             }
+            catch (Exception ex)
+            {
+                //Implementing logger at later stage.
+                throw ex;
+            }
+        }
+
+        public async Task<bool> StartAssignmnet(Assignment assignment)
+        {
+            try
+            {
+
+                var completeAssignment = new Assignment
+                {
+                    Id = assignment.Id,
+                    Title = assignment.Title,
+                    Description = "fuck u",
+                    Period = assignment.Period,
+                    Progress = Progress.Started,
+                    EmployeeId = assignment.EmployeeId,
+                    ProjectId = assignment.ProjectId
+                };
+
+                await _databaseRepo.UpdateAssignmentAsync(completeAssignment);
+
+                return true;
+            }
             catch (Exception)
             {
                 //Implementing logger at later stage.

@@ -120,9 +120,17 @@ namespace GetItDone_Database.Repository
 
         public Task DeleteProjectManagerAsync(ProjectManager projectManager)
         {
+            try
+            {
             _context.Remove(projectManager);
             _context.SaveChangesAsync();
             return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<Employee> EmployeeAsync(int id)
@@ -147,10 +155,20 @@ namespace GetItDone_Database.Repository
 
         public async Task<IEnumerable<ProjectManager>> ProjectManagersAsync() => await _context.ProjectManagers.AsNoTracking().ToListAsync();
 
-        public async Task UpdateAssignmentAsync(Assignment assignment)
+        public  Task UpdateAssignmentAsync(Assignment assignment)
         {
+            try
+            {
             _context.Update(assignment);
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync();
+            return Task.CompletedTask;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public Task UpdateCompanyAsync(Company company)
@@ -169,16 +187,33 @@ namespace GetItDone_Database.Repository
 
         public Task UpdateEmployeeAsync(Employee employee)
         {
-            _context.Update(employee);
-            _context.SaveChangesAsync();
-            return Task.CompletedTask;
+            try
+            {
+                _context.Update(employee);
+                _context.SaveChangesAsync();
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public Task UpdateProjectManagerAsync(ProjectManager projectManager)
         {
+            try
+            {
             _context.Update(projectManager);
             _context.SaveChangesAsync();
             return Task.CompletedTask;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<Project>> ProjectsAsync() => await _context.Projects.AsNoTracking().ToListAsync();
@@ -202,6 +237,7 @@ namespace GetItDone_Database.Repository
         public Task DeleteProjectAsync(Project project)
         {
             _context.Remove(project);
+            _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
