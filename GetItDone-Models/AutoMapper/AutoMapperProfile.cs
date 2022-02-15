@@ -18,12 +18,14 @@ namespace GetItDone_Models.AutoMapper
             CreateMap<EmployeeDTO, Employee>();
             CreateMap<CompanyDTO, Company>();
             CreateMap<ProjectDTO, Project>();
+            CreateMap<AssignmentsIdViewModel, Assignment>();
 
             //Outgoint to frontend
             CreateMap<ProjectManager, ProjectManagerViewModel>();
             CreateMap<Company, CompanyViewModel>();
             CreateMap<Project, ProjectViewModel>();
             CreateMap<Employee, EmployeeViewModel>();
+            CreateMap<Assignment, AssignmentViewModel>();
         }
     }
 }

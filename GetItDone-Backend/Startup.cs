@@ -29,6 +29,7 @@ namespace GetItDone_Backend
             services.ConfigureBearer(Configuration);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 
+
             //DependencyInjections 
             services.ConfigureDependencyInjection();
             services.ConfigureAppSettingsValuesInjection(Configuration);
@@ -36,6 +37,8 @@ namespace GetItDone_Backend
             //Automapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            //Cors
+            services.ConfigureCors();
 
             services.AddControllers();
         }
@@ -51,6 +54,8 @@ namespace GetItDone_Backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("Cors");
+
 
             app.UseAuthentication();
             app.UseAuthorization();

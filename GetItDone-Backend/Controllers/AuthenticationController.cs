@@ -1,22 +1,21 @@
-﻿using GetItDone_Business.Services;
+﻿using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.Models.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
 {
-    
+
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
 
-        private readonly AuthenticationService _authService;
-        public AuthenticationController(AuthenticationService authService)
+        private readonly IAuthenticationService _authService;
+        public AuthenticationController(IAuthenticationService authService)
         {
             _authService = authService;
         }
@@ -51,8 +50,14 @@ namespace GetItDone_Backend.Controllers
 
                     var accessToken = _authService.GenerateAccessToken(claims);
 
+                    Response.Cookies.Append("jwt", accessToken, new CookieOptions
+                    {
+                        HttpOnly = true,
+                    });
+
                     return Ok(new LoginResponse
                     {
+                        Email = request.Email,
                         Token = accessToken,
                         Roles = roles,
                         IsLoggedIn = true

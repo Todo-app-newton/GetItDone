@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -14,9 +14,9 @@ namespace GetItDone_Backend.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly CompanyService _companyService;
+        private readonly ICompanyService _companyService;
         private readonly IMapper _autoMapper;
-        public CompanyController(CompanyService companyService, IMapper mapper)
+        public CompanyController(ICompanyService companyService, IMapper mapper)
         {
             _companyService = companyService;
             _autoMapper = mapper;
@@ -62,6 +62,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpDelete]
         [Route("api/company/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> DeleteCompany(int id)
         {
             try
@@ -82,6 +83,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/company")]
+        [Authorize("ProjectManager")]
         public IActionResult CreateCompany([FromBody] CompanyDTO companDTO)
         {
             try
@@ -103,6 +105,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/company/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> UpdateCompany(int id, CompanyDTO companyDTO)
         {
             try

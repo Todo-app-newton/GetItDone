@@ -28,6 +28,7 @@ namespace GetItDone_Backend.Helpers
             service.AddScoped<IProjectManagerRepository, GIDDatabaseRepository>();
             service.AddScoped<ICompanyRepository, GIDDatabaseRepository>();
             service.AddScoped<IProjectRepository, GIDDatabaseRepository>();
+            service.AddScoped<IAuthenticationService, AuthenticationService>();
 
             //Services 
             service.AddScoped<IProjectManagerService, ProjectManagerService>();
@@ -38,17 +39,21 @@ namespace GetItDone_Backend.Helpers
             service.AddScoped<IAssignmentService, AssignmentService>();
             service.AddScoped<GIDDatabaseRepository>();
 
-            //Controllers
-            service.AddScoped<ProjectManagerService>();
-            service.AddScoped<CompanyService>();
-            service.AddScoped<CustomerService>();
-            service.AddScoped<ProjectService>();
-            service.AddScoped<EmployeeService>();
-            service.AddScoped<AssignmentService>();
+        }
 
-            //Auth
-            service.AddScoped<IAuthenticationService, AuthenticationService>();
-            service.AddScoped<AuthenticationService>();
+        public static void ConfigureCors(this IServiceCollection service)
+        {
+            service.AddCors(opt =>
+            {
+                opt.AddPolicy("Cors", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins(new[] { "https://localhost:44351" });
+                });
+            });
         }
 
 
@@ -59,6 +64,7 @@ namespace GetItDone_Backend.Helpers
             AppSettings.ProjectManagerPassword = config.GetValue<string>("ProjectManagerPassword:Password");
             AppSettings.EmployeePassword = config.GetValue<string>("EmployeePassword:Password");
             AppSettings.CompanyPassword = config.GetValue<string>("CompanyPassword:Password");
+            AppSettings.ElectricianPassword = config.GetValue<string>("EmployeePassword:Password");
         }
     }
 }

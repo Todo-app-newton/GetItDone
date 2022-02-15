@@ -3,6 +3,7 @@ import { Row, Col, Container, Form } from 'reactstrap';
 import logo from './logo.jpg';
 import background from './background-login2.jpg';
 import './Login/Login.css'
+import { Redirect } from 'react-router-dom'
 
 export class Login extends Component {
     static displayName = Login.name;
@@ -24,29 +25,29 @@ export class Login extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleSubmit(e) {
-
-        e.preventDefault();
+    handleSubmit = (e) => {
         let loginUserModel = {
             Email: this.state.email,
             Password:this.state.password
         };
+        e.preventDefault();
         fetch('login', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(loginUserModel)
-        }).then(r => r.json()).then(res => {
-            if (res) {
-                console.log(res);
-                this.state.isLoggedIn=true;
-                this.props.history.push({
-                    pathname: '/profile-page',
-                    state: { email: res.email }
-                })
-            }
-            else
-                console.log(res)
-        });
+        }).then(response => this.setState({ isLoggedIn: response.data.IsLoggedIn }))
+            .catch(error => {
+                console.log("There was an erro!", error);
+            });
+    }
+
+    Authenticated = () => {
+        if (!this.state.isLoggedIn) {
+            return <Redirect to='/login' />
+        } else {
+            return <Redirect to='/Profile' />
+        }
     }
 
     sleep(milliseconds) {
@@ -110,6 +111,7 @@ export class Login extends Component {
                     </Col>
                 </Row>
             </Container>
+
         );
     }
 

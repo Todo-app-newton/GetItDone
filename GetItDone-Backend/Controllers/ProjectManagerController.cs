@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -15,9 +14,9 @@ namespace GetItDone_Backend.Controllers
     [ApiController]
     public class ProjectManagerController : ControllerBase
     {
-        private readonly ProjectManagerService _projectManagerService;
+        private readonly IProjectManagerService _projectManagerService;
         private readonly IMapper _autoMapper;
-        public ProjectManagerController(ProjectManagerService projectManagerService, IMapper autoMapper)
+        public ProjectManagerController(IProjectManagerService projectManagerService, IMapper autoMapper)
         {
             _projectManagerService = projectManagerService;
             _autoMapper = autoMapper;
@@ -52,7 +51,9 @@ namespace GetItDone_Backend.Controllers
 
                 if (projectManager is null) return NotFound("No projectManager could be found with that ID");
 
-                return Ok(_autoMapper.Map<ProjectManagerViewModel>(projectManager));
+                var projectManagerViewModel = _autoMapper.Map<ProjectManagerViewModel>(projectManager);
+
+                return Ok(projectManagerViewModel);
             }
             catch (Exception)
             {

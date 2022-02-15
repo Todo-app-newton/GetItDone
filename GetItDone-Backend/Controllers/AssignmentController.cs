@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -15,12 +15,14 @@ namespace GetItDone_Backend.Controllers
     public class AssignmentController : ControllerBase
     {
 
-        private readonly AssignmentService _assingmentService;
+        private readonly IAssignmentService _assingmentService;
         private readonly IMapper _autoMapper;
-        public AssignmentController(IMapper autoMapper, AssignmentService assingmentService)
+        private readonly IEmployeeService _employeeService;
+        public AssignmentController(IMapper autoMapper, IAssignmentService assingmentService, IEmployeeService employeeService)
         {
             _autoMapper = autoMapper;
             _assingmentService = assingmentService;
+            _employeeService = employeeService;
         }
 
 
@@ -35,6 +37,46 @@ namespace GetItDone_Backend.Controllers
                 if (assignments is null) return NotFound("No assignments could be found");
 
                 return Ok(_autoMapper.Map<List<AssignmentViewModel>>(assignments));
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Assignments/{email}")]
+        public async Task<IActionResult> GetEmployeeAssignments(string email)
+        {
+            try
+            {
+                var employeesAssignments = await _employeeService.GetAllEmployeeAssignments(email);
+
+                if (employeesAssignments is null) return NotFound();
+
+                return Ok(_autoMapper.Map<List<AssignmentViewModel>>(employeesAssignments));
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+        [HttpPost]
+        [Route("api/completeAssignment")]
+        public async Task<IActionResult> CompleteAssignment(AssignmentsIdViewModel assignmentsIdViewModel)
+        {
+            try
+            {
+                var assignmentMapped = _autoMapper.Map<Assignment>(assignmentsIdViewModel);
+                var assignment = await _assingmentService.GetAssignmentAsync(assignmentMapped.Id);
+                var IsCompleted = await _assingmentService.CompleteAssignmnet(assignment);
+
+                if (IsCompleted)
+                    return Ok("Assignment successfully completed");
+                else
+                    return BadRequest("Assignment could not be completed, try again");
             }
             catch (Exception)
             {
@@ -62,8 +104,12 @@ namespace GetItDone_Backend.Controllers
             }
         }
 
+    
+
+
         [HttpDelete]
         [Route("api/assignment/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> DeleteAssignment(int id)
         {
             try
@@ -84,6 +130,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/assignment")]
+        [Authorize("ProjectManager")]
         public IActionResult CreateAssignment([FromBody] AssignmentDTO assignmentDTO)
         {
             try

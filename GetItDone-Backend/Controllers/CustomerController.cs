@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using GetItDone_Business.Services;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -15,9 +15,9 @@ namespace GetItDone_Backend.Controllers
     public class CustomerController : ControllerBase
     {
 
-        private readonly CustomerService _customerService;
+        private readonly ICustomerService _customerService;
         private readonly IMapper _autoMapper;
-        public CustomerController(CustomerService customerService, IMapper mapper)
+        public CustomerController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
             _autoMapper = mapper;
@@ -25,6 +25,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpGet]
         [Route("api/customers")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> GetCustomer()
         {
             try
@@ -44,6 +45,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpGet]
         [Route("api/customer/{id}")]
+
         public async Task<IActionResult> GetCustomer(int id)
         {
             try
@@ -83,6 +85,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/customer")]
+        [Authorize("ProjectManager")]
         public IActionResult CreateCustomer([FromBody] CustomerDTO customerDTO)
         {
             try
@@ -104,6 +107,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/customer/{id}")]
+        [Authorize("ProjectManager")]
         public async Task<IActionResult> UpdateCustomer(int id, CustomerDTO customerDTO)
         {
             try
