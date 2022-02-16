@@ -40,7 +40,7 @@ export class Login extends Component {
             if (res.email) {
                 this.state.isLoggedIn = true;
                 this.props.history.push({
-                    pathname: '/profile-page',
+                    pathname: '/Home',
                     state: { email: res.email }
                 })
             }

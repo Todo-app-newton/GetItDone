@@ -37,6 +37,8 @@ namespace GetItDone_Frontend.Controllers
                 };
                 var response = await GetToken(newLoginRequest);
 
+                if (response is null) return null;
+
                 var identity = new LoginResponse
                 {
                     Email = login.Email,

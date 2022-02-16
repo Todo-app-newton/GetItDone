@@ -9,7 +9,7 @@ import companyImg from './company.jpg';
 import createEmployeeImg from './CreateEmployee.jpg';
 import CustomerImg from './Customer.jpg';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap';
-
+import projectImg from './Project.jpg';
 
 
 
@@ -128,7 +128,7 @@ export class ProjectManager extends Component {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(employeeDTO),
-        }).then(resp => alert(resp))
+        }).then(window.location.reload(false))
     }
     
     render() {
@@ -146,13 +146,27 @@ export class ProjectManager extends Component {
                 </container>
 
                 <div className="cards">
+
+                    <Card className="card" style={{ width: '18rem' }}>
+                        <CardImg variant="top" className="card-image" src={projectImg} />
+                        <CardBody>
+                            <CardTitle className="cardtitle">Create Project</CardTitle>
+                            <CardText>
+                                Use this one if you needs to create a new project.
+                         </CardText>
+                            <div className="buttonCard">
+                                <Button variant="primary" className="btn btn-primary">Create Project</Button>
+                            </div>
+                        </CardBody>
+                    </Card>
+
+
                     <Card className="card" style={{ width: '18rem' }}>
                         <CardImg variant="top" className="card-image"  src={assignmentImg} />
                     <CardBody>
                             <CardTitle className="cardtitle">Assign Assignment</CardTitle>
                         <CardText>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
+                                Use this one if you want to create a new assignment.
                          </CardText>
                             <div className="buttonCard">
                                 <Button variant="primary" className="btn btn-primary">Create Assignment</Button>
@@ -164,10 +178,10 @@ export class ProjectManager extends Component {
                     <Card className="card"  style={{ width: '18rem' }}>
                         <CardImg variant="top" className="card-image"  src={createEmployeeImg} />
                     <CardBody>
-                            <CardTitle className="cardtitle">Create a new Employee</CardTitle>
+                            <CardTitle className="cardtitle">Create Employee</CardTitle>
                         <CardText>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
+                                Use this one if you want to create a new Employee.
+   
                          </CardText>
                             <div className="buttonCard">
                                 <Button variant="primary" className="btn btn-primary" onClick={this.toggleCreateEmpModal}>Create Employee</Button>
@@ -180,8 +194,7 @@ export class ProjectManager extends Component {
                     <CardBody>
                             <CardTitle className="cardtitle">Create Customer</CardTitle>
                         <CardText>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
+                                Use this one if you want to create a Customer.                      
                         </CardText>
                             <div className="buttonCard">
                                 <Button variant="primary" className="btn btn-primary">Create Customer</Button>
@@ -191,11 +204,11 @@ export class ProjectManager extends Component {
 
                     <Card className="card"  style={{ width: '18rem' }}>
                         <CardImg variant="top" className="card-image" src={companyImg} />
-                    <CardBody>
+                    <CardBody >
                         <CardTitle className="cardtitle">Create Company</CardTitle>
                         <CardText>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
+                                Use this one to create a new Company.
+                
                          </CardText>
                             <div className="buttonCard">
                                 <Button variant="primary" className="btn btn-primary">Create Company</Button>

@@ -31,6 +31,7 @@ export class NavMenu extends Component {
 
     render() {
 
+        let loginRole = this.state.LoginResponse
 
     return (
       <header>
@@ -43,28 +44,40 @@ export class NavMenu extends Component {
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                 <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                     <ul className="navbar-nav flex-grow">
-                <NavItem style={{ padding: "1em" }}>
+
+                        <NavItem style={{ padding: "0.5em" }}>
                     <NavLink tag={Link} className="text-dark" to="/profile-page">Profile page</NavLink>
                 </NavItem>
-                <NavItem style={{ padding: "1em" }}>
+
+                        <NavItem style={{ padding: "0.5em" }}>
                     <NavLink tag={Link} className="text-dark" to="/Assignment" style={{ paddingLeft: "10em" }}>Assignments</NavLink>
                 </NavItem>
-                <NavItem style={{ padding: "1em" }}>
-                            <NavLink tag={Link} className="text-dark" to="/fetch-data">Employees</NavLink>
-                        </NavItem>
 
-                 {loginRole.role === "ProjectManager" ?
-                    <NavItem style={{ padding: "1em" }}>
-                        <NavLink tag={Link} className="text-dark" to="/ProjectManager"> ProjectManagers</NavLink>
-                    </NavItem> : null}
+                        {loginRole.role === "ProjectManager" ?
+                            <NavItem style={{ padding: "0.5em" }}>
+                                <NavLink tag={Link} className="text-dark" to="/Employee"> Employees </NavLink>
+                            </NavItem> : null}
 
-                <NavItem style={{ padding: "1em" }}>
-                    <NavLink tag={Link} className="text-dark" to="/">Customers</NavLink>
+                     {loginRole.role === "ProjectManager" ?
+                            <NavItem style={{ padding: "0.5em" }}>
+                            <NavLink tag={Link} className="text-dark" to="/ProjectManager"> ProjectManagers </NavLink>
+                            </NavItem> : null}
+
+                        {loginRole.role === "ProjectManager" ?
+                            <NavItem style={{ padding: "0.5em" }}>
+                                <NavLink tag={Link} className="text-dark" to="/Company"> Companies </NavLink>
+                            </NavItem> : null}
+
+
+                        {loginRole.role === "ProjectManager" ?
+                            <NavItem style={{ padding: "0.5em" }}>
+                                <NavLink tag={Link} className="text-dark" to="/Customer"> Customers </NavLink>
+                            </NavItem> : null}
+
+                <NavItem style={{ padding: "0.5em" }}>
+                    <NavLink tag={Link} className="text-dark" to="/Contact">Contact</NavLink>
                 </NavItem>
-                <NavItem style={{ padding: "1em" }}>
-                    <NavLink tag={Link} className="text-dark" to="/">Contact</NavLink>
-                </NavItem>
-                <NavItem style={{ padding: "1em" }}>
+                        <NavItem style={{ padding: "0.5em" }}>
                     <NavLink tag={Link} className="text-dark" to="/" style={{ marginLeft: "8em" }}>Sign Out</NavLink>
                 </NavItem>
 
