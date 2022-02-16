@@ -131,7 +131,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpDelete]
         [Route("api/assignment/{id}")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> DeleteAssignment(int id)
         {
             try
@@ -152,7 +152,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/assignment")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public IActionResult CreateAssignment([FromBody] AssignmentDTO assignmentDTO)
         {
             try

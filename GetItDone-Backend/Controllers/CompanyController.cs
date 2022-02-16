@@ -62,7 +62,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpDelete]
         [Route("api/company/{id}")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> DeleteCompany(int id)
         {
             try
@@ -83,7 +83,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/company")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public IActionResult CreateCompany([FromBody] CompanyDTO companDTO)
         {
             try
@@ -105,7 +105,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/company/{id}")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> UpdateCompany(int id, CompanyDTO companyDTO)
         {
             try

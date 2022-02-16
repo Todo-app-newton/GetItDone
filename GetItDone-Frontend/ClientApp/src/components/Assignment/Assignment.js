@@ -204,6 +204,10 @@ export class Assignment extends Component {
     }
 
 
+
+
+    
+
     render() {
         let pendingcontents = this.state.loading ?
             <p><em>Loading...</em></p> :
@@ -228,32 +232,41 @@ export class Assignment extends Component {
                  </container>
 
                 <h1 id="PendingLabel1" >Pending Assignments</h1>
-                <p>These are pending assignments </p>
                 {pendingcontents}
            
                 <h1 id="StartedLabel2" >Started Assignments</h1>
-                <p>These are started assignments </p>
                 {startedcontents}
 
                 <h1 id="tabelLabel3" >Completed Assignments</h1>
-                <p>These are Completed assignments </p>
                 {completedcontents}
 
-                <Modal isOpen={this.state.showHide}>
+                <Modal isOpen={this.state.showHide} className="Modal">
                     <ModalHeader> Edit Assignment</ModalHeader>
                     <ModalBody>
-                        <form>
-                            <div className="form-group">
-                            <label>Title</label>
-                                <input type="text" name="title" value={this.state.title} onChange={this.handleChange} placeholder="Titel"/>
-                            <label> Description</label>
-                                <input type="text" name="description" value={this.state.description} onChange={this.handleChange} placeholder="Description" />
-                            <label>Period</label>
-                                <input type="date" name="period" value={this.state.period} onChange={this.handleChange} placeholder="Period" />
-                                <label>Progress (0 = Pending, 1 = Started, 2 = Paused, 3 = Completed)</label>
-                                <input type="text" min="0" max="3" name="progress" value={this.state.progress} onChange={this.handleChange} placeholder="Progress" />
-                                <button type="submit"   className="btn btn-primary btn-block" onClick={this.edit}>Confirm </button>
-                        </div>
+                        <form class="Assignment-form">
+                                <div class="inputs">
+                                    <label>Title</label>
+                                    <br />
+                                    <input type="text" name="title" value={this.state.title} onChange={this.handleChange} placeholder="Titel" />
+                                </div>
+                                <div class="inputs">
+                                    <label> Description</label>
+                                    <br />
+                                    <input type="text" name="description" value={this.state.description} onChange={this.handleChange} placeholder="Description" />
+                                </div>
+                                <div class="inputs">
+                                    <label>Period</label>
+                                    <br/>
+                                    <input type="date" name="period" value={this.state.period} onChange={this.handleChange} placeholder="Period" />
+                                </div>
+                                <div class="inputs">
+                                    <label>Progress (0 = Pending, 1 = Started, 2 = Paused, 3 = Completed)</label>
+                                    <br />
+                                    <input type="text" min="0" max="3" name="progress" value={this.state.progress} onChange={this.handleChange} placeholder="Progress" />
+                            </div>
+                                <div class="sumbitBtn">
+                                <button type="submit" className="btn btn-primary btn-block assBtn" onClick={this.edit}>Confirm </button>
+                                </div>
                              </form> 
                     </ModalBody>
                     <ModalFooter>                      
@@ -272,6 +285,7 @@ export class Assignment extends Component {
         const data = await response.json();
         this.setState({ startedAssignmentssviewmodel: data, loading: false });
     }
+
     async fetchPendingAssignments() {
         const response = await fetch('api/Assignment/FetchPending');
         const data = await response.json();
@@ -282,4 +296,4 @@ export class Assignment extends Component {
         const data = await response.json();
         this.setState({ completedAssignmentssviewmodel: data, loading: false });
     }
-}
+} 

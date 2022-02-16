@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using GetItDone_Models.DTO;
+using GetItDone_Models.Enums;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
 using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -16,10 +19,13 @@ namespace GetItDone_Backend.Controllers
     {
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _autoMapper;
-        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper, IAssignmentService assignmentService)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper, IAssignmentService assignmentService, UserManager<IdentityUser> userManager)
         {
             _employeeService = employeeService;
             _autoMapper = autoMapper;
+            _userManager = userManager;
         }
 
 
@@ -67,7 +73,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpDelete]
         [Route("api/employee/{id}")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             try
@@ -88,13 +94,24 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/employee")]
-        [Authorize("ProjectManager")]
-        public IActionResult CreateEmployee([FromBody] EmployeeDTO employeeDTO)
+        [Authorize(Roles = "ProjectManager")]
+        public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDTO employeeDTO)
         {
             try
             {
                 var employee = _autoMapper.Map<Employee>(employeeDTO);
-                var IsCreated = _employeeService.CreateEmployeeAsync(employee);
+                var IsCreated = await _employeeService.CreateEmployeeAsync(employee);
+
+                var newEmployeeIdentityUser = new IdentityUser()
+                {
+                    UserName = employeeDTO.FirstName,
+                    Email = employeeDTO.Email,
+                };
+
+                var employeeClaim = new Claim("Role", "Employeee");
+
+               await _userManager.CreateAsync(newEmployeeIdentityUser, employeeDTO.Password);
+               await _userManager.AddClaimAsync(newEmployeeIdentityUser, employeeClaim);
 
                 if (IsCreated)
                     return Ok("Successfully created employee");
@@ -110,18 +127,21 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/employee/{id}")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> UpdateEmployee(int id, EmployeeDTO employeeDto)
         {
             try
             {
-                var fetchedEmployee = await _employeeService.GetEmployeeAsync(id);
+
+                var employee = _autoMapper.Map<Employee>(employeeDto);
+                var fetchedEmployee = await _employeeService.GetEmployeeAsync(employee.Id);
+                
 
                 fetchedEmployee.FirstName = employeeDto.FirstName;
                 fetchedEmployee.LastName = employeeDto.LastName;
                 fetchedEmployee.Email = employeeDto.Email;
-                fetchedEmployee.Profession = employeeDto.Profession;
-                fetchedEmployee.CompanyId = employeeDto.CompanyId;
+                fetchedEmployee.Profession = (Profession)Convert.ToInt32(employeeDto.Profession);
+                fetchedEmployee.CompanyId = employee.CompanyId;
 
                 var isUpdated = _employeeService.UpdateEmployeeAsync(fetchedEmployee);
 

@@ -54,7 +54,7 @@ namespace GetItDone_Business.Services
                 {
                     Id = assignment.Id,
                     Title = assignment.Title,
-                    Description = "fuck u",
+                    Description = assignment.Description,
                     Period = assignment.Period,
                     Progress = Progress.Completed,
                     EmployeeId = assignment.EmployeeId,
@@ -146,7 +146,7 @@ namespace GetItDone_Business.Services
                 {
                     Id = assignment.Id,
                     Title = assignment.Title,
-                    Description = "fuck u",
+                    Description = assignment.Description,
                     Period = assignment.Period,
                     Progress = Progress.Started,
                     EmployeeId = assignment.EmployeeId,

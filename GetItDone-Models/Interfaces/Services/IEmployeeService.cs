@@ -10,7 +10,7 @@ namespace GetItDone_Models.Interfaces.Services
     public interface IEmployeeService
     {
         Task<IEnumerable<Employee>> GetEmployeesAsync();
-        bool CreateEmployeeAsync(Employee createEmployee);
+        Task<bool> CreateEmployeeAsync(Employee createEmployee);
         Task<Employee> GetEmployeeAsync(int id);
         Task<bool> DeleteEmployeeAsync(int id);
         bool UpdateEmployeeAsync(Employee updateEmployee);

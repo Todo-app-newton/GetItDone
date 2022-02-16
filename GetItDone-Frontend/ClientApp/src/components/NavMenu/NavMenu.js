@@ -12,9 +12,16 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+        collapsed: true,
+        LoginResponse: ''
     };
   }
+
+
+    componentDidMount() {
+        this.fetchLoggedInRole();  
+    }
+
 
   toggleNavbar () {
     this.setState({
@@ -22,7 +29,9 @@ export class NavMenu extends Component {
     });
   }
 
-  render() {
+    render() {
+
+
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -41,11 +50,14 @@ export class NavMenu extends Component {
                     <NavLink tag={Link} className="text-dark" to="/Assignment" style={{ paddingLeft: "10em" }}>Assignments</NavLink>
                 </NavItem>
                 <NavItem style={{ padding: "1em" }}>
-                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Employees</NavLink>
-                </NavItem>
-                <NavItem style={{ padding: "1em" }}>
-                    <NavLink tag={Link} className="text-dark" to="/">Companies</NavLink>
-                </NavItem>
+                            <NavLink tag={Link} className="text-dark" to="/fetch-data">Employees</NavLink>
+                        </NavItem>
+
+                 {loginRole.role === "ProjectManager" ?
+                    <NavItem style={{ padding: "1em" }}>
+                        <NavLink tag={Link} className="text-dark" to="/ProjectManager"> ProjectManagers</NavLink>
+                    </NavItem> : null}
+
                 <NavItem style={{ padding: "1em" }}>
                     <NavLink tag={Link} className="text-dark" to="/">Customers</NavLink>
                 </NavItem>
@@ -61,5 +73,10 @@ export class NavMenu extends Component {
         </Navbar>
       </header>
     );
-  }
+    }
+    async fetchLoggedInRole() {
+        const response = await fetch('api/authentication/Role');
+        const data = await response.json();
+        this.setState({ LoginResponse: data, loading: false });
+    }
 }

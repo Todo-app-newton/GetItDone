@@ -1,12 +1,11 @@
 ﻿using GetItDone_Database.Repository;
-using GetItDone_Models.DTO;
 using GetItDone_Models.Enums;
 using GetItDone_Models.Interfaces.Services;
 using GetItDone_Models.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GetItDone_Business.Services
@@ -21,11 +20,11 @@ namespace GetItDone_Business.Services
 
 
 
-        public bool CreateEmployeeAsync(Employee createEmployee)
+        public async Task<bool> CreateEmployeeAsync(Employee createEmployee)
         {
             try
             {
-                var companyId = _databaseRepo.CompanyAsync(createEmployee.Id);
+                  var companyId = await _databaseRepo.CompanyAsync(createEmployee.CompanyId);
 
                 var newEmployee = new Employee
                 {

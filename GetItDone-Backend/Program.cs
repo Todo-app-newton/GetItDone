@@ -2,15 +2,11 @@ using GetItDone_Database.Database;
 using GetItDone_Models.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace GetItDone_Backend
 {
@@ -60,7 +56,7 @@ namespace GetItDone_Backend
                         userManager.CreateAsync(projectManager, AppSettings.ProjectManagerPassword).GetAwaiter().GetResult();
 
 
-                        var projectManagerClaim = new Claim("Role", "Project Manager");
+                        var projectManagerClaim = new Claim("Role", "ProjectManager");
                         var employeeTwoClaim = new Claim("Role", "Employee");
                         var employeeClaim = new Claim("Role", "Employee");
                         var companyClaim = new Claim("Role", "Company");

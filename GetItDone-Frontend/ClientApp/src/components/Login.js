@@ -38,7 +38,6 @@ export class Login extends Component {
             body: JSON.stringify(loginUserModel)
         }).then(r => r.json()).then(res => {
             if (res.email) {
-                console.log(res);
                 this.state.isLoggedIn = true;
                 this.props.history.push({
                     pathname: '/profile-page',

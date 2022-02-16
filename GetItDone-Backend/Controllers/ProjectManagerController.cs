@@ -6,6 +6,7 @@ using GetItDone_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GetItDone_Backend.Controllers
@@ -61,6 +62,31 @@ namespace GetItDone_Backend.Controllers
                 throw;
             }
         }
+
+
+        [HttpGet]
+        [Route("api/projectmanager/ByEmail/{email}")]
+        public async Task<IActionResult> GetProjectManagerWithEmail(string email)
+        {
+            try
+            {
+                var projectManagers = await _projectManagerService.GetProjectManagersAsync();
+
+                var specificProjectmanager = projectManagers.Where(x => x.Email == email).First();
+
+                if (specificProjectmanager is null) return NotFound("No projectManager could be found with that email");
+
+                var projectManagerViewModel = _autoMapper.Map<ProjectManagerViewModel>(specificProjectmanager);
+
+                return Ok(projectManagerViewModel);
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+
 
         [HttpDelete]
         [Route("api/projectManager/{id}")]

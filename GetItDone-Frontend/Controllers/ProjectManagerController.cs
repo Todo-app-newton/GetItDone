@@ -1,16 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GetItDone_Frontend.Helpers;
+using GetItDone_Models.DTO;
+using GetItDone_Models.Models.Auth;
+using GetItDone_Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GetItDone_Frontend.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class ProjectManagerController : Controller
     {
-        public IActionResult Index()
+        private static string Url => "https://localhost:5001/api/ProjectManager/";
+           
+        [HttpGet("ProjectManagersName")]
+        public async Task<ProjectManagerViewModel> GetProjectManagersName()
         {
-            return View();
+            using (var _httpCLient = new HttpClient())
+            {
+                var projectManagersName = "ByEmail/";
+                var session = SessionHelper.GetObjectFromJson<LoginResponse>(HttpContext.Session, "identity");
+                _httpCLient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.Token);
+                var response = await _httpCLient.GetAsync(Url + projectManagersName + session.Email);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = response.Content.ReadAsStringAsync().Result;
+                    var projectManagerViewModel = JsonConvert.DeserializeObject<ProjectManagerViewModel>(jsonString);
+                    return projectManagerViewModel;
+                }
+            }
+                return null;
         }
+
+        [HttpPost("CreateEmployee")]
+        public async Task<string> CreateEmployee([FromBody] EmployeeDTO employeeDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var _httpCLient = new HttpClient())
+                {
+                    var url = "https://localhost:5001/api/employee";
+                    var session = SessionHelper.GetObjectFromJson<LoginResponse>(HttpContext.Session, "identity");
+                    _httpCLient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.Token);
+                    var serialized = JsonConvert.SerializeObject(employeeDTO);
+                    var content = new StringContent(serialized, Encoding.UTF8, "application/json");
+                    var response = await _httpCLient.PostAsync(url, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsStringAsync().Result;
+                        
+                    }
+                }
+            }
+                return null;
+        }
+
     }
 }

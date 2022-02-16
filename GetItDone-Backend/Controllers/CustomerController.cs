@@ -25,7 +25,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpGet]
         [Route("api/customers")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> GetCustomer()
         {
             try
@@ -85,7 +85,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPost]
         [Route("api/customer")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public IActionResult CreateCustomer([FromBody] CustomerDTO customerDTO)
         {
             try
@@ -107,7 +107,7 @@ namespace GetItDone_Backend.Controllers
 
         [HttpPut]
         [Route("api/customer/{id}")]
-        [Authorize("ProjectManager")]
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> UpdateCustomer(int id, CustomerDTO customerDTO)
         {
             try

@@ -3,8 +3,8 @@ import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
 import { Login } from './components/Login';
 import { Assignment } from './components/Assignment/Assignment';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import { ProjectManager } from './components/ProjectManager/ProjectManager';
+
 import {ProfilePage} from './components/ProfilePage/ProfilePage'
 
 
@@ -22,8 +22,7 @@ export default class App extends Component {
                 <Layout>
                     <Route path='/Assignment' component={Assignment} />
                     <Route path='/profile-page' component={ProfilePage} />
-                    <Route path='/counter' component={Counter} />
-                    <Route path='/fetch-data' component={FetchData} />
+                    <Route path='/ProjectManager' component={ProjectManager} />
                 </Layout>
             </Switch>
         );
