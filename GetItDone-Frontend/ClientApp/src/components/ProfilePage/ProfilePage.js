@@ -8,19 +8,17 @@ export class ProfilePage extends Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.location.state);
         this.state = {
-            Profile: {
-                id: '',
-                firstName: '',
-                lastName: '',
-                phone: '',
-                email:'',
-                profession: '',
-                company: '',
-                assignments:[],
-            }
-
+            Profile: [],
+            loading:true
         };
+       this.getProfileData = this.getProfileData.bind(this);
+    }
+
+
+    componentDidMount() {
+        this.getProfileData();
     }
     static renderProfile(Profile) {
         return (
@@ -82,5 +80,33 @@ export class ProfilePage extends Component {
                 {contents}
             </div>
         );
+    }
+    sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
+
+    getProfileData() {
+        console.log(this.props.location.state)
+        this.sleep(5000)
+
+        let employeeModel = {
+            Email: this.props.location.state
+        };
+
+        fetch('employeebyemail', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(employeeModel)
+        }).then(r => r.json()).then(res => {
+            if (res) {
+                console.log(res);
+                this.sleep(5000)
+                this.setState({ Profile: res, loading: false });
+            }
+        });
     }
 }

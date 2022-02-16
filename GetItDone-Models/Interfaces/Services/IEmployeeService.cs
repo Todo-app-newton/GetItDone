@@ -12,6 +12,7 @@ namespace GetItDone_Models.Interfaces.Services
         Task<IEnumerable<Employee>> GetEmployeesAsync();
         bool CreateEmployeeAsync(Employee createEmployee);
         Task<Employee> GetEmployeeAsync(int id);
+        Task<Employee> GetEmployeeByEmailAsync(string email);
         Task<bool> DeleteEmployeeAsync(int id);
         bool UpdateEmployeeAsync(Employee updateEmployee);
         Task<IEnumerable<Assignment>> GetAllEmployeeAssignments(string email);

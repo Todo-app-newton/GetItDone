@@ -115,6 +115,24 @@ namespace GetItDone_Business.Services
             }
         }
 
+        public Task<Employee> GetEmployeeByEmailAsync(string email)
+        {
+            try
+            {
+                var employee = _databaseRepo.GetEmployeeByEmail(email);
+
+                if (employee is null) return null;
+
+                return employee;
+
+            }
+            catch (Exception)
+            {
+                //Implementing logger at later stage.
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
             try

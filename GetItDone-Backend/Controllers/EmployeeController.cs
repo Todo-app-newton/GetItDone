@@ -63,7 +63,24 @@ namespace GetItDone_Backend.Controllers
                 throw;
             }
         }
+        [HttpPost]//POST eller GET
+        [Route("api/EmployeeEmail")]
+        public async Task<IActionResult> GetEmployeeByEmail(string email)
+        {
+            try
+            {
+                var employee = await _employeeService.GetEmployeeByEmailAsync(email);
 
+                if (employee is null) return NotFound("No employee could be found with that ID");
+
+                return Ok(_autoMapper.Map<EmployeeViewModel>(employee));
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
 
         [HttpDelete]
         [Route("api/employee/{id}")]

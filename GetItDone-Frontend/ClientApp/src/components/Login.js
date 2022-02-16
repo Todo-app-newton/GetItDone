@@ -37,18 +37,26 @@ export class Login extends Component {
             credentials: 'include',
             body: JSON.stringify(loginUserModel)
         }).then(r => r.json()).then(res => {
-            if (res.email) {
+            if (res.isLoggedIn===true) {
                 console.log(res);
+                this.sleep(5000)
                 this.state.isLoggedIn = true;
                 this.props.history.push({
                     pathname: '/profile-page',
-                    state: { email: res.email }
+                    state: { detail: res.email }
                 })
             }
             else {
                 <Redirect to='/Login' />
             }
         });
+    }
+    sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
     }
 
     render() {
