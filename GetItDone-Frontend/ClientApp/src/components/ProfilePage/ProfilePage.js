@@ -9,20 +9,21 @@ export class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Profile: {
-                id: '',
-                firstName: '',
-                lastName: '',
-                phone: '',
-                email:'',
-                profession: '',
-                company: '',
-                assignments:[],
-            }
+            profile: '',
+            lastName: '',
+            role: '',
+            email: '',
+            profession: '',
+            company: '',
 
         };
     }
-    static renderProfile(Profile) {
+
+    componentDidMount() {
+        this.fetchLoggedInRole();
+    }
+    render() {
+        let userProfile = this.state.profile
         return (
             <Container fluid="md">
                 <Row className="justify-content-md-center">
@@ -39,48 +40,44 @@ export class ProfilePage extends Component {
                             <Col>
                                 <ul>
                                     <li><b>Name: </b></li>
-                                    <li><b>Phone: </b></li>
                                     <li><b>Email: </b></li>
+                                    <li><b>Role: </b></li>
                                 </ul>
                             </Col>
                             <Col>
                                 <ul>
-                                    <li>{Profile.firstName} {Profile.lastName}</li>
-                                    <li>{Profile.phone}</li>
-                                    <li>{Profile.email}</li>
+                                    <li>{userProfile.firstName} {userProfile.lastName}</li>
+                                    <li>{userProfile.email}</li>
+                                    <li>{userProfile.role}</li>
                                 </ul>
                             </Col>
                         </Row>
+                        {userProfile.role === "Employee" ?
                         <Row className="work-info">
                             <Col>
                                 <ul>
                                     <li><b>Profession: </b></li>
                                     <li><b>Company: </b></li>
-                                    <li><b>Asignments: </b></li>
                                 </ul>
                             </Col>
                             <Col>
                                 <ul>
-                                    <li>{Profile.profession}</li>
-                                    <li>{Profile.company}</li>
-                                    <li>Show assignments</li>
+                                    <li>{userProfile.profession}</li>
+                                    <li>{userProfile.company}</li>
                                 </ul>
                             </Col>
-                        </Row>
+                        </Row> : null}
                     </Col>
                 </Row>
             </Container>
         );
     }
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : ProfilePage.renderProfile(this.state.Profile);
-
-        return (
-            <div>
-                {contents}
-            </div>
-        );
+    async fetchLoggedInRole() {
+            const response = await fetch('api/ProjectManager/ProjectManagersProfile');
+            const manager = await response.json();
+            this.setState({
+                profile:manager,
+                loading: false
+            });
     }
 }

@@ -1,7 +1,10 @@
 ﻿import React, { Component } from 'react';
 import './ProjectManager.css'
 import {
-    Card, CardImg, CardText, CardBody,
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
     CardTitle
 } from 'reactstrap';
 import assignmentImg from "./assignment.png";
@@ -184,7 +187,8 @@ export class ProjectManager extends Component {
    
                          </CardText>
                             <div className="buttonCard">
-                                <Button variant="primary" className="btn btn-primary" onClick={this.toggleCreateEmpModal}>Create Employee</Button>
+                                <Button variant="primary" className="btn btn-primary" onClick={this.toggleCreateEmpModal}>
+                                    Create Employee</Button>
                             </div>
                     </CardBody>
                 </Card>
@@ -240,9 +244,15 @@ export class ProjectManager extends Component {
                                 <input type="email" name="email" value={this.state.email} onChange={this.handleChange} placeholder="Email" />
                             </div>
                             <div class="inputs">
-                                <label>Profession (0 = Painter, 1 = Carpenter, 2 = PlumberFitter, 3 = Electrician)</label>
+                                <label>Profession</label>
                                 <br />
-                                <input type="text" min="0" max="3" name="profession" value={this.state.profession} onChange={this.handleChange} placeholder="Profession" />
+                                <select name="profession" onChange={this.handleChange}>
+                                    <option>Select profession</option>
+                                    <option value={0}>Painter</option>
+                                    <option value={1}>Carpenter</option>
+                                    <option value={2}>Plumberfitter</option>
+                                    <option value={3}>Electrician</option>
+                                </select>
                             </div>
                             <div class="inputs">
                                 <label>Company Id</label>
