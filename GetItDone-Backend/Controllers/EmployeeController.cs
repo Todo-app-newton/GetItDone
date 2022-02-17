@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,11 +19,13 @@ namespace GetItDone_Backend.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+        private readonly ICompanyService _companyService;
         private readonly IMapper _autoMapper;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public EmployeeController(IEmployeeService employeeService, IMapper autoMapper, IAssignmentService assignmentService, UserManager<IdentityUser> userManager)
+        public EmployeeController(ICompanyService companyService, IEmployeeService employeeService, IMapper autoMapper, IAssignmentService assignmentService, UserManager<IdentityUser> userManager)
         {
+            _companyService = companyService;
             _employeeService = employeeService;
             _autoMapper = autoMapper;
             _userManager = userManager;
@@ -62,6 +65,39 @@ namespace GetItDone_Backend.Controllers
                 if (employee is null) return NotFound("No employee could be found with that ID");
 
                 return Ok(_autoMapper.Map<EmployeeViewModel>(employee));
+            }
+            catch (Exception)
+            {
+                //Logging implments later
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("api/employee/ByEmail/{email}")]
+        public async Task<IActionResult> GetEmployeeWithEmail(string email)
+        {
+            try
+            {
+                var employees = await _employeeService.GetEmployeesAsync();
+
+                var specificEmployee = employees.Where(x => x.Email == email).First();
+                int compId = specificEmployee.CompanyId;
+                if (specificEmployee is null) return NotFound("No employee could be found with that email");
+                var company = await _companyService.GetCompanyAsync(compId);
+
+                var employeeViewModel = _autoMapper.Map<EmployeeViewModel>(specificEmployee);
+
+                var employee = new EmployeeDTO
+                {
+                    FirstName=specificEmployee.FirstName,
+                    LastName=specificEmployee.LastName,
+                    Email = specificEmployee.Email,
+                    Profession= Enum.GetName(typeof(Profession), specificEmployee.Profession),
+                    CompanyId= company.CompanyName
+                };
+
+                return Ok(employee);
             }
             catch (Exception)
             {

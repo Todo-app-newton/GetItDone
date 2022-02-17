@@ -4,6 +4,9 @@
 h3{
     padding-top:0;
 }
+p{
+    color:black;
+}
 
 .profile-img-holder, .profile-info, .work-info {
     justify-content: center;
